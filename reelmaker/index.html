@@ -1,0 +1,3479 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reel Maker — Champak Roy</title>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async='async' src='https://www.googletagmanager.com/gtag/js?id=G-F4DXWP1MZK'></script>
+    <script src="js/gif.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+    <style>
+      :root {
+        --bg: #fffaf0;
+        --bg2: #fff4d6;
+        --card: #ffffff;
+        --card2: #fff9ea;
+        --text: #2b2112;
+        --muted: #6b5a3d;
+        --line: #efdfb2;
+        --brand: #d97706;
+        --brand2: #f59e0b;
+        --brand3: #fb923c;
+        --good: #059669;
+        --warn: #d97706;
+        --danger: #dc2626;
+        --purple: #7c3aed;
+        --blue: #2563eb;
+        --shadow: 0 18px 45px rgba(150, 95, 0, 0.12);
+        --shadow-strong: 0 24px 70px rgba(105, 65, 0, 0.18);
+        --radius: 24px;
+        --radius2: 18px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Inter, Arial, Helvetica, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(251, 191, 36, 0.18),
+            transparent 20%
+          ),
+          radial-gradient(
+            circle at bottom right,
+            rgba(249, 115, 22, 0.12),
+            transparent 20%
+          ),
+          linear-gradient(180deg, var(--bg) 0%, #fffdf5 100%);
+      }
+
+      body {
+        min-height: 100vh;
+      }
+
+      .page {
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 18px;
+      }
+
+      .hero {
+        position: relative;
+        overflow: hidden;
+        background:
+          radial-gradient(
+            circle at 85% 10%,
+            rgba(255, 255, 255, 0.25),
+            transparent 18%
+          ),
+          linear-gradient(135deg, #92400e 0%, #d97706 45%, #f59e0b 100%);
+        color: #fff;
+        border-radius: 32px;
+        padding: 26px 26px 22px;
+        box-shadow: var(--shadow-strong);
+        margin-bottom: 18px;
+      }
+
+      .hero h1 {
+        margin: 0 0 8px;
+        font-size: 38px;
+        line-height: 1.08;
+        letter-spacing: 0.2px;
+      }
+
+      .hero p {
+        margin: 0;
+        max-width: 980px;
+        font-size: 15px;
+        line-height: 1.55;
+        opacity: 0.98;
+      }
+
+      .hero-badges {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 14px;
+      }
+
+      .hero-badge {
+        padding: 9px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        font-size: 12px;
+        font-weight: 800;
+        backdrop-filter: blur(8px);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 390px minmax(0, 1fr) 430px;
+        gap: 18px;
+        align-items: start;
+      }
+
+      .panel {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+
+      .panel-head {
+        padding: 16px 18px;
+        font-weight: 800;
+        font-size: 16px;
+        border-bottom: 1px solid var(--line);
+        background: linear-gradient(180deg, #fffef8, #fff7df);
+      }
+
+      .panel-body {
+        padding: 16px;
+      }
+
+      .field {
+        margin-bottom: 14px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 7px;
+        font-size: 13px;
+        font-weight: 800;
+        color: var(--muted);
+        letter-spacing: 0.2px;
+      }
+
+      input[type="text"],
+      input[type="number"],
+      input[type="color"],
+      input[type="range"],
+      input[type="file"],
+      textarea,
+      select {
+        width: 100%;
+        border: 1px solid #e7d7a8;
+        border-radius: 14px;
+        padding: 11px 12px;
+        font-size: 14px;
+        color: var(--text);
+        background: #fffef9;
+        outline: none;
+        transition:
+          border-color 0.16s ease,
+          box-shadow 0.16s ease,
+          transform 0.16s ease;
+      }
+
+      input:focus,
+      textarea:focus,
+      select:focus {
+        border-color: #f59e0b;
+        box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.14);
+      }
+
+      textarea {
+        min-height: 96px;
+        resize: vertical;
+        line-height: 1.45;
+      }
+
+      .grid2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .grid3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 12px;
+      }
+
+      .grid4 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        gap: 12px;
+      }
+
+      .btn-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      button {
+        appearance: none;
+        border: none;
+        border-radius: 14px;
+        padding: 11px 15px;
+        font-size: 14px;
+        font-weight: 800;
+        color: #fff;
+        background: var(--brand);
+        cursor: pointer;
+        transition:
+          transform 0.18s ease,
+          filter 0.18s ease,
+          background 0.18s ease;
+        box-shadow: 0 10px 24px rgba(217, 119, 6, 0.18);
+      }
+
+      button:hover {
+        background: var(--brand2);
+        transform: translateY(-1px);
+        filter: brightness(1.02);
+      }
+
+      button.secondary {
+        background: #f8edd0;
+        color: #6b4e0c;
+        box-shadow: none;
+        border: 1px solid #ecd48f;
+      }
+
+      button.secondary:hover {
+        background: #f7e4b0;
+      }
+
+      button.good {
+        background: var(--good);
+      }
+      button.warn {
+        background: var(--warn);
+      }
+      button.danger {
+        background: var(--danger);
+      }
+      button.purple {
+        background: var(--purple);
+      }
+      button.blue {
+        background: var(--blue);
+      }
+
+      .pill-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .pill {
+        border: 1px solid #efdca8;
+        background: var(--card2);
+        color: #7b5514;
+        border-radius: 14px;
+        padding: 11px 12px;
+        font-size: 14px;
+        font-weight: 800;
+        text-align: center;
+        cursor: pointer;
+        transition: 0.18s ease;
+        box-shadow: none;
+      }
+
+      .pill.active {
+        background: linear-gradient(180deg, #fff3d2, #ffe7a3);
+        color: #8a4b00;
+        border-color: #efb84d;
+        box-shadow: inset 0 0 0 1px rgba(245, 158, 11, 0.35);
+      }
+
+      .inline-meta {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
+
+      .meta-chip {
+        padding: 8px 10px;
+        border-radius: 999px;
+        background: #fff9ea;
+        border: 1px solid #efdfb2;
+        font-size: 12px;
+        font-weight: 700;
+        color: #7b5f2a;
+      }
+
+      .preview-wrap {
+        padding: 18px;
+        min-height: 920px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        background:
+          radial-gradient(
+            circle at center,
+            rgba(251, 191, 36, 0.16),
+            transparent 35%
+          ),
+          linear-gradient(180deg, #fffaf0, #fff7e1);
+      }
+
+      .stage {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .screen-shell {
+        background: linear-gradient(180deg, #171717, #0f172a);
+        border-radius: 42px;
+        padding: 14px;
+        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.24);
+        position: relative;
+      }
+
+      .screen-shell:before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 8px;
+        transform: translateX(-50%);
+        width: 124px;
+        height: 6px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.18);
+      }
+
+      .reel-screen {
+        position: relative;
+        overflow: hidden;
+        border-radius: 30px;
+        background: #000;
+        border: 2px solid rgba(255, 255, 255, 0.08);
+        transform-origin: center center;
+      }
+
+      .reel-screen img,
+      .reel-screen video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .progress-strip {
+        position: absolute;
+        left: 10px;
+        right: 10px;
+        top: 8px;
+        display: flex;
+        gap: 5px;
+        z-index: 8;
+      }
+
+      .progress-seg {
+        flex: 1;
+        height: 4px;
+        border-radius: 999px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.24);
+      }
+
+      .progress-fill {
+        width: 0%;
+        height: 100%;
+        background: #fff;
+        transition: width 0.12s linear;
+      }
+
+      .screen-topbar {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        z-index: 9;
+        padding: 18px 12px 10px;
+        color: #fff;
+        font-size: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 800;
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.58),
+          rgba(0, 0, 0, 0)
+        );
+      }
+
+      .overlay-box {
+        position: absolute;
+        left: 14px;
+        right: 14px;
+        padding: 12px 14px;
+        border-radius: 18px;
+        font-weight: 800;
+        line-height: 1.34;
+        z-index: 10;
+        word-break: break-word;
+        text-shadow: 0 3px 12px rgba(0, 0, 0, 0.94);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+      }
+
+      .preview-controls {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .status {
+        min-height: 22px;
+        text-align: center;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .status strong {
+        color: var(--brand);
+      }
+
+      .download-link {
+        color: var(--brand);
+        font-weight: 800;
+        text-decoration: none;
+      }
+
+      .hint {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.55;
+      }
+
+      .timeline {
+        width: min(100%, 1020px);
+        background: #fffef9;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 14px;
+        box-shadow: var(--shadow);
+      }
+
+      .timeline-toolbar {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+      }
+
+      .timeline-track {
+        display: flex;
+        gap: 8px;
+        overflow: auto;
+        padding-bottom: 4px;
+        scroll-behavior: smooth;
+      }
+
+      .timeline-item {
+        min-width: 124px;
+        border: 1px solid var(--line);
+        background: linear-gradient(180deg, #fffef9, #fff4d8);
+        border-radius: 14px;
+        padding: 8px;
+        cursor: pointer;
+        transition: 0.18s ease;
+        position: relative;
+      }
+
+      .timeline-item.active {
+        border-color: #f2b94b;
+        box-shadow: inset 0 0 0 1px rgba(245, 158, 11, 0.45);
+        background: linear-gradient(180deg, #fff6de, #ffe9b4);
+      }
+
+      .timeline-thumb {
+        width: 100%;
+        height: 92px;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #111827;
+        margin-bottom: 6px;
+        position: relative;
+      }
+
+      .timeline-thumb img,
+      .timeline-thumb video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .timeline-meta {
+        font-size: 11px;
+        color: #745824;
+        line-height: 1.35;
+      }
+
+      .slides {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-height: 68vh;
+        overflow: auto;
+        padding-right: 4px;
+      }
+
+      .slide-card {
+        display: grid;
+        grid-template-columns: 96px 1fr;
+        gap: 12px;
+        border: 1px solid var(--line);
+        background: linear-gradient(180deg, #fffef9, #fff5dc);
+        border-radius: 18px;
+        padding: 12px;
+        cursor: pointer;
+        transition: 0.18s ease;
+        position: relative;
+      }
+
+      .slide-card:hover {
+        transform: translateY(-1px);
+      }
+
+      .slide-card.active {
+        border-color: #efb84d;
+        background: linear-gradient(180deg, #fff4d4, #ffe7ac);
+        box-shadow: inset 0 0 0 1px rgba(245, 158, 11, 0.35);
+      }
+
+      .slide-card.dragging {
+        opacity: 0.45;
+      }
+
+      .slide-thumb {
+        width: 96px;
+        height: 140px;
+        position: relative;
+        border-radius: 14px;
+        overflow: hidden;
+        background: #111827;
+        border: 1px solid #ead5a1;
+        flex-shrink: 0;
+      }
+
+      .slide-thumb img,
+      .slide-thumb video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .slide-badge,
+      .cover-badge,
+      .type-badge {
+        position: absolute;
+        padding: 4px 7px;
+        border-radius: 999px;
+        font-size: 10px;
+        font-weight: 800;
+        color: #fff;
+      }
+
+      .slide-badge {
+        left: 6px;
+        top: 6px;
+        background: rgba(0, 0, 0, 0.72);
+      }
+      .cover-badge {
+        right: 6px;
+        top: 6px;
+        background: #f59e0b;
+      }
+      .type-badge {
+        left: 6px;
+        bottom: 6px;
+        background: rgba(217, 119, 6, 0.92);
+      }
+
+      .slide-title {
+        font-size: 14px;
+        font-weight: 800;
+        margin-bottom: 6px;
+        word-break: break-word;
+      }
+
+      .slide-sub {
+        font-size: 12px;
+        color: #7a6130;
+        margin-bottom: 8px;
+        line-height: 1.45;
+      }
+
+      .mini-actions {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+
+      .mini-actions button {
+        padding: 7px 9px;
+        font-size: 12px;
+        border-radius: 10px;
+      }
+
+      .range-value {
+        margin-top: 5px;
+        font-size: 12px;
+        color: var(--muted);
+        font-weight: 800;
+      }
+
+      .stack {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .toolbar-card {
+        border: 1px solid var(--line);
+        background: #fff9ea;
+        border-radius: 16px;
+        padding: 12px;
+      }
+
+      .seek-wrap {
+        width: min(100%, 980px);
+        background: #fffef9;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 12px 14px;
+        box-shadow: var(--shadow);
+      }
+
+      .seek-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 8px;
+        font-size: 12px;
+        color: #7a6130;
+        font-weight: 800;
+      }
+
+      .seek-wrap input[type="range"] {
+        padding: 0;
+        background: transparent;
+        box-shadow: none;
+        border: none;
+      }
+
+      .footer-note {
+        margin-top: 10px;
+        font-size: 12px;
+        color: #7a6130;
+        line-height: 1.5;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes zoomIn {
+        from {
+          transform: scale(0.6);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      @keyframes flipY {
+        from {
+          transform: rotateY(180deg);
+          opacity: 0;
+        }
+        to {
+          transform: rotateY(0deg);
+          opacity: 1;
+        }
+      }
+      @keyframes rotateX {
+        from {
+          transform: rotateX(90deg);
+          opacity: 0;
+        }
+        to {
+          transform: rotateX(0deg);
+          opacity: 1;
+        }
+      }
+      @keyframes bounceIn {
+        0% {
+          transform: scale(0.5);
+          opacity: 0;
+        }
+        60% {
+          transform: scale(1.18);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      @keyframes slideUp {
+        from {
+          transform: translateY(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      @keyframes spinIn {
+        from {
+          transform: rotate(360deg) scale(0.7);
+          opacity: 0;
+        }
+        to {
+          transform: rotate(0deg) scale(1);
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 1320px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .preview-wrap {
+          min-height: auto;
+        }
+        .slides {
+          max-height: none;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .grid2,
+        .grid3,
+        .grid4,
+        .pill-grid {
+          grid-template-columns: 1fr;
+        }
+        .hero h1 {
+          font-size: 30px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <section class="hero">
+        <h1>🎬 Reel Maker - Champak Roy</h1>
+        <p>
+          Production-style single-file reel builder with media slides, text-only
+          slides, intro/outro generators, undo/redo history, timeline seek,
+          animated preview, project save/load,  WebM export, music
+          export, and auto snapshot pack export.
+        </p>
+        <div class="hero-badges">
+          <div class="hero-badge">Text-only slides</div>
+          <div class="hero-badge">Undo / Redo</div>
+          <div class="hero-badge">Seek timeline</div>
+          <div class="hero-badge">Snapshot automation</div>
+          <div class="hero-badge">Export progress</div>
+        </div>
+      </section>
+
+      <section class="layout">
+        <!-- LEFT -->
+        <div class="panel">
+          <div class="panel-head">Project Setup</div>
+          <div class="panel-body">
+            <div class="field">
+              <label>Media files</label>
+              <input
+                type="file"
+                id="mediaInput"
+                accept="image/*,video/*"
+                multiple
+              />
+            </div>
+
+            <div class="field">
+              <label>Default caption for new slides</label>
+              <textarea
+                id="defaultCaption"
+                placeholder="This caption will be copied into new media slides..."
+              ></textarea>
+            </div>
+
+            <div class="grid2">
+              <div class="field">
+                <label>Default image duration (seconds)</label>
+                <input
+                  type="number"
+                  id="defaultDuration"
+                  min="1"
+                  max="60"
+                  value="2"
+                />
+              </div>
+              <div class="field">
+                <label>Background music</label>
+                <input type="file" id="bgMusic" accept="audio/*" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Ratio</label>
+              <div class="pill-grid" id="ratioGrid">
+                <button type="button" class="pill active" data-ratio="reel">
+                  Reel 9:16
+                </button>
+                <button type="button" class="pill" data-ratio="story">
+                  Story 9:16
+                </button>
+                <button type="button" class="pill" data-ratio="square">
+                  Square 1:1
+                </button>
+                <button type="button" class="pill" data-ratio="landscape">
+                  Landscape 16:9
+                </button>
+              </div>
+            </div>
+
+            <div class="btn-row">
+              <button onclick="App.actions.importSlides()">
+                ➕ Build Slides
+              </button>
+              <button class="purple" onclick="App.actions.addIntroSlide()">
+                ✨ Add Intro
+              </button>
+              <button class="purple" onclick="App.actions.addOutroSlide()">
+                🏁 Add Outro
+              </button>
+              <button class="blue" onclick="App.actions.addTextSlide()">
+                📝 Add Text Slide
+              </button>
+            </div>
+
+            <div style="height: 10px"></div>
+
+            <div class="btn-row">
+              <button class="secondary" onclick="App.preview.play()">
+                ▶ Preview
+              </button>
+              <button class="secondary" onclick="App.preview.pause()">
+                ⏸ Pause
+              </button>
+              <button class="secondary" onclick="App.preview.stop()">
+                ⏹ Stop
+              </button>
+              <button class="secondary" onclick="App.actions.jumpToCover()">
+                ⭐ Go To Cover
+              </button>
+            </div>
+
+            <div style="height: 10px"></div>
+
+            <div class="btn-row">
+              <button class="secondary" onclick="App.actions.undo()">
+                ↶ Undo
+              </button>
+              <button class="secondary" onclick="App.actions.redo()">
+                ↷ Redo
+              </button>
+              <button class="secondary" onclick="App.actions.shuffleSlides()">
+                🔀 Shuffle
+              </button>
+            </div>
+
+            <div style="height: 12px"></div>
+
+            <div class="btn-row">
+              <button onclick="App.exporters.exportGIF()">📤 Export GIF</button>
+              <button onclick="App.exporters.exportVideo()">
+                🎥 Export Video
+              </button>
+              <button onclick="App.exporters.exportVideoWithMusic()">
+                🎧 Export With Music
+              </button>
+            </div>
+
+            <div style="height: 10px"></div>
+
+            <div class="btn-row">
+              <button class="good" onclick="App.storage.saveProjectJson()">
+                💾 Save Project JSON
+              </button>
+              <button
+                class="warn"
+                onclick="document.getElementById('projectJsonInput').click()"
+              >
+                📂 Load Project JSON
+              </button>
+              <button
+                class="secondary"
+                onclick="App.exporters.exportCoverThumbnail()"
+              >
+                🖼 Export Cover
+              </button>
+              <button
+                class="secondary"
+                onclick="App.exporters.exportSnapshotPack()"
+              >
+                📸 Snapshot Pack
+              </button>
+              <input
+                type="file"
+                id="projectJsonInput"
+                accept="application/json"
+                style="display: none"
+              />
+            </div>
+
+            <div class="inline-meta">
+              <div class="meta-chip" id="slideCountChip">Slides: 0</div>
+              <div class="meta-chip" id="historyChip">History: 0</div>
+              <div class="meta-chip" id="ratioChip">Ratio: Reel 9:16</div>
+            </div>
+
+            <div style="height: 12px"></div>
+            <div id="gifStatus" class="status"></div>
+            <div id="videoStatus" class="status"></div>
+            <div id="generalStatus" class="status"></div>
+
+            <p class="hint">
+              Thanks for using this. Please give your comments and suggestions.
+            </p>
+          </div>
+        </div>
+
+        <!-- CENTER -->
+        <div class="panel">
+          <div class="panel-head">Preview & Timeline</div>
+          <div class="preview-wrap">
+            <div class="stage">
+              <div class="screen-shell">
+                <div id="reelScreen" class="reel-screen"></div>
+              </div>
+
+              <div class="preview-controls">
+                <button class="secondary" onclick="App.actions.prevSlide()">
+                  ⬅ Prev
+                </button>
+                <button class="secondary" onclick="App.actions.nextSlide()">
+                  Next ➡
+                </button>
+                <button
+                  class="secondary"
+                  onclick="App.preview.toggleAutoplay()"
+                >
+                  🔁 Toggle Auto
+                </button>
+                <button
+                  class="secondary"
+                  onclick="App.preview.restartCurrent()"
+                >
+                  🔄 Restart Slide
+                </button>
+              </div>
+
+              <div id="previewInfo" class="status">No slide loaded yet.</div>
+
+              <div class="seek-wrap">
+                <div class="seek-header">
+                  <span>Slide seek position</span>
+                  <span id="seekLabel">0%</span>
+                </div>
+                <input
+                  id="timelineSeek"
+                  type="range"
+                  min="0"
+                  max="100"
+                  value="0"
+                />
+              </div>
+
+              <div class="timeline">
+                <div class="timeline-toolbar">
+                  <strong style="color: #7b5514">Timeline</strong>
+                  <span
+                    style="font-size: 12px; color: #7a6130; font-weight: 800"
+                    >Click a card to jump. Drag cards to reorder.</span
+                  >
+                </div>
+                <div id="timelineTrack" class="timeline-track"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="panel">
+          <div class="panel-head">Current Slide & Slide List</div>
+          <div class="panel-body">
+            <div class="stack">
+              <div class="toolbar-card">
+                <div class="btn-row">
+                  <button
+                    class="secondary"
+                    onclick="App.actions.saveCurrentSlide()"
+                  >
+                    💾 Save Slide
+                  </button>
+                  <button class="secondary" onclick="App.actions.markAsCover()">
+                    ⭐ Make Cover
+                  </button>
+                  <button
+                    class="secondary"
+                    onclick="App.actions.duplicateCurrentSlide()"
+                  >
+                    📑 Duplicate
+                  </button>
+                  <button
+                    class="danger"
+                    onclick="App.actions.removeCurrentSlide()"
+                  >
+                    🗑 Remove
+                  </button>
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Slide name</label>
+                <input
+                  type="text"
+                  id="slideName"
+                  placeholder="Name this slide"
+                />
+              </div>
+
+              <div class="field">
+                <label>Caption</label>
+                <textarea
+                  id="slideCaption"
+                  placeholder="Edit caption for selected slide..."
+                ></textarea>
+              </div>
+
+              <div class="grid2">
+                <div class="field">
+                  <label>Duration (seconds for images/text)</label>
+                  <input
+                    type="number"
+                    id="slideDuration"
+                    min="1"
+                    max="60"
+                    value="2"
+                  />
+                </div>
+                <div class="field">
+                  <label>Transition</label>
+                  <select id="slideTransition">
+                    <option value="fadeIn">Fade In</option>
+                    <option value="zoomIn">Zoom In</option>
+                    <option value="flipY">Flip Y</option>
+                    <option value="rotateX">Rotate X</option>
+                    <option value="bounceIn">Bounce In</option>
+                    <option value="slideUp">Slide Up</option>
+                    <option value="spinIn">Spin In</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid2">
+                <div class="field">
+                  <label>Text size</label>
+                  <input
+                    type="range"
+                    id="slideFontSize"
+                    min="16"
+                    max="72"
+                    value="20"
+                  />
+                  <div id="fontSizeValue" class="range-value">20 px</div>
+                </div>
+                <div class="field">
+                  <label>Font family</label>
+                  <select id="slideFontFamily">
+                    <option value="Arial">Arial</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="'Trebuchet MS'">Trebuchet MS</option>
+                    <option value="'Courier New'">Courier New</option>
+                    <option value="Verdana">Verdana</option>
+                    <option value="'Times New Roman'">Times New Roman</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid2">
+                <div class="field">
+                  <label>Text color</label>
+                  <input type="color" id="slideTextColor" value="#ffffff" />
+                </div>
+                <div class="field">
+                  <label>Text stroke color</label>
+                  <input
+                    type="color"
+                    id="slideTextStrokeColor"
+                    value="#000000"
+                  />
+                </div>
+              </div>
+
+              <div class="grid2">
+                <div class="field">
+                  <label>Text stroke width</label>
+                  <input
+                    type="range"
+                    id="slideTextStrokeWidth"
+                    min="0"
+                    max="8"
+                    value="0"
+                  />
+                  <div id="strokeWidthValue" class="range-value">0 px</div>
+                </div>
+                <div class="field">
+                  <label>Text shadow strength</label>
+                  <input
+                    type="range"
+                    id="slideTextShadow"
+                    min="0"
+                    max="30"
+                    value="12"
+                  />
+                  <div id="textShadowValue" class="range-value">12</div>
+                </div>
+              </div>
+
+              <div class="grid2">
+                <div class="field">
+                  <label>Overlay opacity</label>
+                  <input
+                    type="range"
+                    id="slideOverlayOpacity"
+                    min="0"
+                    max="0.95"
+                    step="0.05"
+                    value="0.45"
+                  />
+                  <div id="overlayOpacityValue" class="range-value">0.45</div>
+                </div>
+                <div class="field">
+                  <label>Overlay blur</label>
+                  <input
+                    type="range"
+                    id="slideOverlayBlur"
+                    min="0"
+                    max="20"
+                    value="4"
+                  />
+                  <div id="overlayBlurValue" class="range-value">4 px</div>
+                </div>
+              </div>
+
+              <div class="grid3">
+                <div class="field">
+                  <label>Overlay position</label>
+                  <select id="slideOverlayPosition">
+                    <option value="bottom">Bottom</option>
+                    <option value="middle">Middle</option>
+                    <option value="top">Top</option>
+                    <option value="hide">Hide</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Text align</label>
+                  <select id="slideTextAlign">
+                    <option value="center">Center</option>
+                    <option value="left">Left</option>
+                    <option value="right">Right</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Caption line spacing</label>
+                  <input
+                    type="range"
+                    id="slideLineHeight"
+                    min="1"
+                    max="2"
+                    step="0.05"
+                    value="1.2"
+                  />
+                  <div id="lineHeightValue" class="range-value">1.2</div>
+                </div>
+              </div>
+
+              <div class="grid3">
+                <div class="field">
+                  <label>Theme tint</label>
+                  <input type="color" id="slideTintColor" value="#000000" />
+                </div>
+                <div class="field">
+                  <label>Tint opacity</label>
+                  <input
+                    type="range"
+                    id="slideTintOpacity"
+                    min="0"
+                    max="0.85"
+                    step="0.05"
+                    value="0"
+                  />
+                  <div id="tintOpacityValue" class="range-value">0</div>
+                </div>
+                <div class="field">
+                  <label>Overlay color</label>
+                  <input type="color" id="slideOverlayColor" value="#000000" />
+                </div>
+              </div>
+
+              <div class="grid2">
+                <div class="field">
+                  <label>Animation effect</label>
+                  <select id="slideKenBurns">
+                    <option value="none">None</option>
+                    <option value="zoomInSlow">Zoom In Slow</option>
+                    <option value="zoomOutSlow">Zoom Out Slow</option>
+                    <option value="panLeft">Pan Left</option>
+                    <option value="panRight">Pan Right</option>
+                    <option value="panUp">Pan Up</option>
+                    <option value="panDown">Pan Down</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Text motion</label>
+                  <select id="slideTextMotion">
+                    <option value="none">None</option>
+                    <option value="floatUp">Float Up</option>
+                    <option value="floatDown">Float Down</option>
+                    <option value="zoomText">Zoom Text</option>
+                    <option value="pulseText">Pulse Text</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid2">
+                <div class="field">
+                  <label>Background style for text slide</label>
+                  <select id="slideTextBgStyle">
+                    <option value="gradient">Gradient</option>
+                    <option value="solid">Solid</option>
+                    <option value="radial">Radial</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Text slide background 2</label>
+                  <input type="color" id="slideTextBg2" value="#7c3aed" />
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Text slide background 1</label>
+                <input type="color" id="slideTextBg1" value="#d97706" />
+              </div>
+
+              <div id="slidesList" class="slides"></div>
+
+              <div class="footer-note">
+                Tip: text-only slides use the slide caption as the main message
+                and use the text background colors set above.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      const App = (() => {
+        const FPS = 30;
+        const ANIMATION_DURATION = 1000;
+        const MAX_FILE_MB = 200;
+
+        const ratioMap = {
+          reel: { width: 270, height: 480, label: "Reel 9:16" },
+          story: { width: 270, height: 480, label: "Story 9:16" },
+          square: { width: 400, height: 400, label: "Square 1:1" },
+          landscape: { width: 640, height: 360, label: "Landscape 16:9" },
+        };
+
+        const state = {
+          slides: [],
+          currentIndex: -1,
+          coverIndex: 0,
+          ratio: "reel",
+          autoplay: true,
+          previewStopped: true,
+          previewAudio: null,
+          dragIndex: null,
+          currentSlideElapsedMs: 0,
+          previewRaf: null,
+          previewStartedAt: 0,
+          history: [],
+          future: [],
+          isSeeking: false,
+        };
+
+        const el = (id) => document.getElementById(id);
+
+        const helpers = {
+          wait(ms) {
+            return new Promise((resolve) => setTimeout(resolve, ms));
+          },
+          clamp(v, min, max) {
+            return Math.max(min, Math.min(max, v));
+          },
+          escapeHtml(str) {
+            return String(str || "").replace(
+              /[&<>"']/g,
+              (m) =>
+                ({
+                  "&": "&amp;",
+                  "<": "&lt;",
+                  ">": "&gt;",
+                  '"': "&quot;",
+                  "'": "&#39;",
+                })[m],
+            );
+          },
+          escapeXml(str) {
+            return String(str || "")
+              .replace(/&/g, "&amp;")
+              .replace(/"/g, "&quot;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;");
+          },
+          fileKind(file) {
+            if (!file || !file.type) return "custom";
+            if (file.type.startsWith("image/")) return "image";
+            if (file.type.startsWith("video/")) return "video";
+            return "custom";
+          },
+          getSize() {
+            return ratioMap[state.ratio];
+          },
+          clearStatuses() {
+            el("gifStatus").innerHTML = "";
+            el("videoStatus").innerHTML = "";
+            el("generalStatus").innerHTML = "";
+          },
+          setGeneralStatus(msg) {
+            el("generalStatus").textContent = msg || "";
+          },
+          updateMetaChips() {
+            el("slideCountChip").textContent = "Slides: " + state.slides.length;
+            el("historyChip").textContent = "History: " + state.history.length;
+            el("ratioChip").textContent =
+              "Ratio: " + ratioMap[state.ratio].label;
+          },
+          safeCloneData() {
+            return JSON.parse(JSON.stringify(storage.buildProjectData()));
+          },
+          getCurrentSlide() {
+            return state.slides[state.currentIndex];
+          },
+          makeId() {
+            return crypto.randomUUID
+              ? crypto.randomUUID()
+              : "slide-" +
+                  Date.now() +
+                  "-" +
+                  Math.random().toString(36).slice(2);
+          },
+        };
+
+        const history = {
+          pushSnapshot() {
+            state.history.push(helpers.safeCloneData());
+            if (state.history.length > 100) state.history.shift();
+            state.future = [];
+            helpers.updateMetaChips();
+          },
+          restoreProject(project) {
+            preview.stop(true);
+            memory.cleanupAllUrls();
+
+            state.slides = [];
+            const rebuilt = [];
+
+            for (const saved of project.slides || []) {
+              const file = null;
+              rebuilt.push({
+                id: saved.id || helpers.makeId(),
+                file,
+                url: saved.url || "",
+                sourceType: saved.sourceType || "saved",
+                name: saved.name || "Slide",
+                mediaKind: saved.mediaKind || "text",
+                caption: saved.caption || "",
+                duration: saved.duration || 2,
+                transition: saved.transition || "fadeIn",
+                fontSize: saved.fontSize || 20,
+                fontFamily: saved.fontFamily || "Arial",
+                textColor: saved.textColor || "#ffffff",
+                textStrokeColor: saved.textStrokeColor || "#000000",
+                textStrokeWidth: saved.textStrokeWidth ?? 0,
+                textShadow: saved.textShadow ?? 12,
+                overlayOpacity: saved.overlayOpacity ?? 0.45,
+                overlayBlur: saved.overlayBlur ?? 4,
+                overlayColor: saved.overlayColor || "#000000",
+                overlayPosition: saved.overlayPosition || "bottom",
+                textAlign: saved.textAlign || "center",
+                lineHeight: saved.lineHeight || 1.2,
+                tintColor: saved.tintColor || "#000000",
+                tintOpacity: saved.tintOpacity ?? 0,
+                kenBurns: saved.kenBurns || "none",
+                textMotion: saved.textMotion || "none",
+                textBgStyle: saved.textBgStyle || "gradient",
+                textBg1: saved.textBg1 || "#d97706",
+                textBg2: saved.textBg2 || "#7c3aed",
+                synthetic: !!saved.synthetic,
+              });
+            }
+
+            state.slides = rebuilt;
+            state.ratio = project.ratio || "reel";
+            state.coverIndex = helpers.clamp(
+              project.coverIndex ?? 0,
+              0,
+              Math.max(0, state.slides.length - 1),
+            );
+            state.currentIndex = state.slides.length
+              ? helpers.clamp(
+                  project.currentIndex ?? 0,
+                  0,
+                  state.slides.length - 1,
+                )
+              : -1;
+            state.currentSlideElapsedMs = 0;
+
+            ui.setRatioUI();
+            ui.renderSlides();
+            ui.loadCurrentSlideIntoEditor();
+            ui.renderPreview();
+            ui.renderTimeline();
+            helpers.updateMetaChips();
+          },
+        };
+
+        const memory = {
+          cleanupAllUrls() {
+            for (const s of state.slides) {
+              if (s.url && s.sourceType === "blob") {
+                try {
+                  URL.revokeObjectURL(s.url);
+                } catch (e) {}
+              }
+            }
+          },
+        };
+
+        const factories = {
+          makeSlideObject(file, index) {
+            const sizeMB = (file.size || 0) / (1024 * 1024);
+            if (sizeMB > MAX_FILE_MB) {
+              throw new Error(
+                file.name + " is larger than " + MAX_FILE_MB + "MB.",
+              );
+            }
+
+            return {
+              id: helpers.makeId(),
+              file,
+              url: URL.createObjectURL(file),
+              sourceType: "blob",
+              name: file.name,
+              mediaKind: helpers.fileKind(file),
+              caption: el("defaultCaption").value.trim(),
+              duration: Math.max(
+                1,
+                parseInt(el("defaultDuration").value || "2", 10),
+              ),
+              transition: "fadeIn",
+              fontSize: 20,
+              fontFamily: "Arial",
+              textColor: "#ffffff",
+              textStrokeColor: "#000000",
+              textStrokeWidth: 0,
+              textShadow: 12,
+              overlayOpacity: 0.45,
+              overlayBlur: 4,
+              overlayColor: "#000000",
+              overlayPosition: "bottom",
+              textAlign: "center",
+              lineHeight: 1.2,
+              tintColor: "#000000",
+              tintOpacity: 0,
+              kenBurns: "none",
+              textMotion: "none",
+              textBgStyle: "gradient",
+              textBg1: "#d97706",
+              textBg2: "#7c3aed",
+              synthetic: false,
+            };
+          },
+
+          makeSyntheticSlide(title, caption, bg1, bg2) {
+            const svg = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+              <defs>
+                <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="${bg1}"/>
+                  <stop offset="100%" stop-color="${bg2}"/>
+                </linearGradient>
+              </defs>
+              <rect width="1080" height="1920" fill="url(#g)"/>
+              <circle cx="920" cy="220" r="230" fill="rgba(255,255,255,0.10)"/>
+              <circle cx="170" cy="1650" r="300" fill="rgba(255,255,255,0.08)"/>
+              <text x="540" y="760" text-anchor="middle" font-size="90" font-weight="700" fill="#ffffff" font-family="Arial">${helpers.escapeXml(title)}</text>
+              <text x="540" y="930" text-anchor="middle" font-size="44" fill="#ffffff" font-family="Arial">${helpers.escapeXml(caption)}</text>
+            </svg>
+          `;
+            const blob = new Blob([svg], { type: "image/svg+xml" });
+            const file = new File(
+              [blob],
+              `${title.toLowerCase().replace(/\s+/g, "-")}.svg`,
+              { type: "image/svg+xml" },
+            );
+
+            return {
+              id: helpers.makeId(),
+              file,
+              url: URL.createObjectURL(file),
+              sourceType: "blob",
+              name: title,
+              mediaKind: "image",
+              caption,
+              duration: 2,
+              transition: "fadeIn",
+              fontSize: 26,
+              fontFamily: "Arial",
+              textColor: "#ffffff",
+              textStrokeColor: "#000000",
+              textStrokeWidth: 0,
+              textShadow: 12,
+              overlayOpacity: 0.25,
+              overlayBlur: 4,
+              overlayColor: "#000000",
+              overlayPosition: "bottom",
+              textAlign: "center",
+              lineHeight: 1.2,
+              tintColor: "#000000",
+              tintOpacity: 0,
+              kenBurns: "zoomInSlow",
+              textMotion: "none",
+              textBgStyle: "gradient",
+              textBg1: bg1,
+              textBg2: bg2,
+              synthetic: true,
+            };
+          },
+
+          makeTextSlide() {
+            return {
+              id: helpers.makeId(),
+              file: null,
+              url: "",
+              sourceType: "text",
+              name: "Text Slide",
+              mediaKind: "text",
+              caption: "Write your message here",
+              duration: Math.max(
+                1,
+                parseInt(el("defaultDuration").value || "2", 10),
+              ),
+              transition: "fadeIn",
+              fontSize: 30,
+              fontFamily: "Arial",
+              textColor: "#ffffff",
+              textStrokeColor: "#000000",
+              textStrokeWidth: 0,
+              textShadow: 16,
+              overlayOpacity: 0,
+              overlayBlur: 4,
+              overlayColor: "#000000",
+              overlayPosition: "middle",
+              textAlign: "center",
+              lineHeight: 1.2,
+              tintColor: "#000000",
+              tintOpacity: 0,
+              kenBurns: "none",
+              textMotion: "zoomText",
+              textBgStyle: "gradient",
+              textBg1: "#d97706",
+              textBg2: "#7c3aed",
+              synthetic: true,
+            };
+          },
+        };
+
+        const ui = {
+          init() {
+            document.querySelectorAll("#ratioGrid .pill").forEach((btn) => {
+              btn.addEventListener("click", () => {
+                history.pushSnapshot();
+                state.ratio = btn.dataset.ratio;
+                ui.setRatioUI();
+              });
+            });
+
+            const liveRanges = [
+              ["slideFontSize", "fontSizeValue", " px"],
+              ["slideTextStrokeWidth", "strokeWidthValue", " px"],
+              ["slideTextShadow", "textShadowValue", ""],
+              ["slideOverlayOpacity", "overlayOpacityValue", ""],
+              ["slideOverlayBlur", "overlayBlurValue", " px"],
+              ["slideTintOpacity", "tintOpacityValue", ""],
+              ["slideLineHeight", "lineHeightValue", ""],
+            ];
+
+            for (const [inputId, labelId, suffix] of liveRanges) {
+              el(inputId).addEventListener("input", () => {
+                el(labelId).textContent = el(inputId).value + suffix;
+                ui.renderPreview();
+              });
+            }
+
+            el("projectJsonInput").addEventListener(
+              "change",
+              storage.handleProjectLoad,
+            );
+
+            el("timelineSeek").addEventListener("input", () => {
+              const slide = helpers.getCurrentSlide();
+              if (!slide) return;
+              const totalMs =
+                slide.mediaKind === "video"
+                  ? slide.videoDurationMs || 10000
+                  : (slide.duration || 2) * 1000;
+              const pct = parseFloat(el("timelineSeek").value || "0") / 100;
+              state.currentSlideElapsedMs = totalMs * pct;
+              el("seekLabel").textContent = Math.round(pct * 100) + "%";
+              ui.renderPreview();
+            });
+
+            const editorFields = [
+              "slideName",
+              "slideCaption",
+              "slideDuration",
+              "slideTransition",
+              "slideFontSize",
+              "slideFontFamily",
+              "slideTextColor",
+              "slideTextStrokeColor",
+              "slideTextStrokeWidth",
+              "slideTextShadow",
+              "slideOverlayOpacity",
+              "slideOverlayBlur",
+              "slideOverlayColor",
+              "slideOverlayPosition",
+              "slideTextAlign",
+              "slideLineHeight",
+              "slideTintColor",
+              "slideTintOpacity",
+              "slideKenBurns",
+              "slideTextMotion",
+              "slideTextBgStyle",
+              "slideTextBg1",
+              "slideTextBg2",
+            ];
+
+            editorFields.forEach((id) => {
+              el(id).addEventListener("input", () => ui.renderPreview());
+              el(id).addEventListener("change", () => ui.renderPreview());
+            });
+
+            helpers.updateMetaChips();
+          },
+
+          setRatioUI() {
+            document.querySelectorAll("#ratioGrid .pill").forEach((btn) => {
+              btn.classList.toggle("active", btn.dataset.ratio === state.ratio);
+            });
+            ui.renderPreview();
+            ui.renderTimeline();
+            helpers.updateMetaChips();
+          },
+
+          loadCurrentSlideIntoEditor() {
+            const slide = helpers.getCurrentSlide();
+            if (!slide) return;
+
+            el("slideName").value = slide.name || "";
+            el("slideCaption").value = slide.caption || "";
+            el("slideDuration").value = slide.duration || 2;
+            el("slideTransition").value = slide.transition || "fadeIn";
+            el("slideFontSize").value = slide.fontSize || 20;
+            el("slideFontFamily").value = slide.fontFamily || "Arial";
+            el("slideTextColor").value = slide.textColor || "#ffffff";
+            el("slideTextStrokeColor").value =
+              slide.textStrokeColor || "#000000";
+            el("slideTextStrokeWidth").value = slide.textStrokeWidth ?? 0;
+            el("slideTextShadow").value = slide.textShadow ?? 12;
+            el("slideOverlayOpacity").value = slide.overlayOpacity ?? 0.45;
+            el("slideOverlayBlur").value = slide.overlayBlur ?? 4;
+            el("slideOverlayColor").value = slide.overlayColor || "#000000";
+            el("slideOverlayPosition").value =
+              slide.overlayPosition || "bottom";
+            el("slideTextAlign").value = slide.textAlign || "center";
+            el("slideLineHeight").value = slide.lineHeight || 1.2;
+            el("slideTintColor").value = slide.tintColor || "#000000";
+            el("slideTintOpacity").value = slide.tintOpacity ?? 0;
+            el("slideKenBurns").value = slide.kenBurns || "none";
+            el("slideTextMotion").value = slide.textMotion || "none";
+            el("slideTextBgStyle").value = slide.textBgStyle || "gradient";
+            el("slideTextBg1").value = slide.textBg1 || "#d97706";
+            el("slideTextBg2").value = slide.textBg2 || "#7c3aed";
+
+            el("fontSizeValue").textContent = el("slideFontSize").value + " px";
+            el("strokeWidthValue").textContent =
+              el("slideTextStrokeWidth").value + " px";
+            el("textShadowValue").textContent = el("slideTextShadow").value;
+            el("overlayOpacityValue").textContent = el(
+              "slideOverlayOpacity",
+            ).value;
+            el("overlayBlurValue").textContent =
+              el("slideOverlayBlur").value + " px";
+            el("tintOpacityValue").textContent = el("slideTintOpacity").value;
+            el("lineHeightValue").textContent = el("slideLineHeight").value;
+          },
+
+          renderSlides() {
+            const list = el("slidesList");
+            if (!state.slides.length) {
+              list.innerHTML = `<div class="hint">No slides yet. Import media or add intro / outro / text slides.</div>`;
+              helpers.updateMetaChips();
+              return;
+            }
+
+            list.innerHTML = state.slides
+              .map((slide, index) => {
+                const isActive = index === state.currentIndex;
+                const isCover = index === state.coverIndex;
+                const kind = slide.mediaKind || "custom";
+                let mediaHtml = `<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:linear-gradient(135deg,${slide.textBg1 || "#d97706"},${slide.textBg2 || "#7c3aed"});color:white;font-weight:800;font-size:16px;padding:8px;text-align:center;">TXT</div>`;
+                if (kind === "image")
+                  mediaHtml = `<img src="${slide.url}" alt="">`;
+                if (kind === "video")
+                  mediaHtml = `<video src="${slide.url}" muted playsinline></video>`;
+                if (kind === "custom")
+                  mediaHtml = `<img src="${slide.url}" alt="">`;
+
+                return `
+              <div class="slide-card ${isActive ? "active" : ""}" draggable="true"
+                   data-index="${index}"
+                   ondragstart="App.actions.handleDragStart(event)"
+                   ondragover="App.actions.handleDragOver(event)"
+                   ondrop="App.actions.handleDrop(event)"
+                   ondragend="App.actions.handleDragEnd(event)"
+                   onclick="App.actions.selectSlide(${index})">
+                <div class="slide-thumb">
+                  ${mediaHtml}
+                  <div class="slide-badge">#${index + 1}</div>
+                  ${isCover ? `<div class="cover-badge">COVER</div>` : ``}
+                  <div class="type-badge">${kind.toUpperCase()}</div>
+                </div>
+                <div>
+                  <div class="slide-title">${helpers.escapeHtml(slide.name || "Slide")}</div>
+                  <div class="slide-sub">${kind} • ${kind === "video" ? "video" : slide.duration + "s"} • ${slide.transition} • ${slide.textMotion || "none"}</div>
+                  <div class="slide-sub">${helpers.escapeHtml(slide.caption || "(No caption)")}</div>
+                  <div class="mini-actions">
+                    <button type="button" class="secondary" onclick="event.stopPropagation(); App.actions.moveSlideUp(${index})">↑ Up</button>
+                    <button type="button" class="secondary" onclick="event.stopPropagation(); App.actions.moveSlideDown(${index})">↓ Down</button>
+                    <button type="button" class="secondary" onclick="event.stopPropagation(); App.actions.setCover(${index})">⭐ Cover</button>
+                  </div>
+                </div>
+              </div>
+            `;
+              })
+              .join("");
+
+            helpers.updateMetaChips();
+          },
+
+          renderTimeline() {
+            const track = el("timelineTrack");
+            if (!state.slides.length) {
+              track.innerHTML = `<div class="hint">Timeline will appear here after importing slides.</div>`;
+              return;
+            }
+
+            track.innerHTML = state.slides
+              .map((slide, index) => {
+                const active = index === state.currentIndex;
+                let thumb = `<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:linear-gradient(135deg,${slide.textBg1 || "#d97706"},${slide.textBg2 || "#7c3aed"});color:white;font-weight:800;font-size:15px;">TXT</div>`;
+                if (slide.mediaKind === "image")
+                  thumb = `<img src="${slide.url}" alt="">`;
+                if (slide.mediaKind === "video")
+                  thumb = `<video src="${slide.url}" muted playsinline></video>`;
+                if (slide.mediaKind === "custom")
+                  thumb = `<img src="${slide.url}" alt="">`;
+
+                return `
+              <div class="timeline-item ${active ? "active" : ""}" onclick="App.actions.selectSlide(${index})">
+                <div class="timeline-thumb">${thumb}</div>
+                <div class="timeline-meta">
+                  <div>#${index + 1}${index === state.coverIndex ? " • cover" : ""}</div>
+                  <div>${slide.mediaKind === "video" ? "video" : slide.duration + "s"}</div>
+                  <div>${helpers.escapeHtml((slide.caption || "").slice(0, 28) || "(No caption)")}</div>
+                </div>
+              </div>
+            `;
+              })
+              .join("");
+          },
+
+          applyTextMotionStyles(overlay, slide, progress) {
+            progress = helpers.clamp(progress, 0, 1);
+            let transform = overlay.style.transform || "";
+            let scale = 1;
+            let translateY = 0;
+
+            switch (slide.textMotion) {
+              case "floatUp":
+                translateY = (1 - progress) * 20;
+                break;
+              case "floatDown":
+                translateY = (progress - 1) * 20;
+                break;
+              case "zoomText":
+                scale = 0.85 + 0.15 * progress;
+                break;
+              case "pulseText":
+                scale = 1 + Math.sin(progress * Math.PI * 2) * 0.04;
+                break;
+            }
+
+            const middle =
+              slide.overlayPosition === "middle" ? " translateY(-50%)" : "";
+            overlay.style.transform = `${middle} translateY(${translateY}px) scale(${scale})`;
+          },
+
+          renderOverlayPreview(screen, slide, progress = 0) {
+            if (!slide || slide.overlayPosition === "hide" || !slide.caption)
+              return;
+
+            const overlay = document.createElement("div");
+            overlay.className = "overlay-box";
+            overlay.textContent = slide.caption;
+            overlay.style.fontSize = (slide.fontSize || 20) + "px";
+            overlay.style.fontFamily = slide.fontFamily || "Arial";
+            overlay.style.color = slide.textColor || "#ffffff";
+            overlay.style.background = `linear-gradient(to top, ${colorUtil.hexToRgba(slide.overlayColor || "#000000", slide.overlayOpacity ?? 0.45)}, ${colorUtil.hexToRgba(slide.overlayColor || "#000000", Math.max(0, (slide.overlayOpacity ?? 0.45) * 0.35))})`;
+            overlay.style.textAlign = slide.textAlign || "center";
+            overlay.style.backdropFilter = `blur(${slide.overlayBlur ?? 4}px)`;
+            overlay.style.webkitBackdropFilter = `blur(${slide.overlayBlur ?? 4}px)`;
+            overlay.style.textShadow = `0 3px ${slide.textShadow ?? 12}px rgba(0,0,0,.9)`;
+
+            if ((slide.textStrokeWidth || 0) > 0) {
+              overlay.style.webkitTextStroke = `${slide.textStrokeWidth}px ${slide.textStrokeColor || "#000000"}`;
+            }
+
+            if (slide.overlayPosition === "top") {
+              overlay.style.top = "56px";
+            } else if (slide.overlayPosition === "middle") {
+              overlay.style.top = "50%";
+            } else {
+              overlay.style.bottom = "16px";
+            }
+
+            ui.applyTextMotionStyles(overlay, slide, progress);
+            screen.appendChild(overlay);
+          },
+
+          renderTextSlideBackground(screen, slide) {
+            const bg = document.createElement("div");
+            bg.style.position = "absolute";
+            bg.style.inset = "0";
+
+            const c1 = slide.textBg1 || "#d97706";
+            const c2 = slide.textBg2 || "#7c3aed";
+
+            if (slide.textBgStyle === "solid") {
+              bg.style.background = c1;
+            } else if (slide.textBgStyle === "radial") {
+              bg.style.background = `radial-gradient(circle at 20% 20%, ${c1}, ${c2})`;
+            } else {
+              bg.style.background = `linear-gradient(135deg, ${c1}, ${c2})`;
+            }
+
+            screen.appendChild(bg);
+
+            const glow1 = document.createElement("div");
+            glow1.style.position = "absolute";
+            glow1.style.width = "180px";
+            glow1.style.height = "180px";
+            glow1.style.borderRadius = "50%";
+            glow1.style.top = "8%";
+            glow1.style.right = "6%";
+            glow1.style.background = "rgba(255,255,255,.12)";
+            screen.appendChild(glow1);
+
+            const glow2 = document.createElement("div");
+            glow2.style.position = "absolute";
+            glow2.style.width = "220px";
+            glow2.style.height = "220px";
+            glow2.style.borderRadius = "50%";
+            glow2.style.left = "-40px";
+            glow2.style.bottom = "-20px";
+            glow2.style.background = "rgba(255,255,255,.08)";
+            screen.appendChild(glow2);
+          },
+
+          renderPreview() {
+            const screen = el("reelScreen");
+            const info = el("previewInfo");
+            const { width, height, label } = helpers.getSize();
+
+            screen.innerHTML = "";
+            screen.style.width = width + "px";
+            screen.style.height = height + "px";
+
+            const slide = helpers.getCurrentSlide();
+            if (!slide) {
+              info.textContent = "No slide loaded yet.";
+              el("timelineSeek").value = 0;
+              el("seekLabel").textContent = "0%";
+              return;
+            }
+
+            const totalMs =
+              slide.mediaKind === "video"
+                ? slide.videoDurationMs || 10000
+                : (slide.duration || 2) * 1000;
+            const progress =
+              totalMs > 0
+                ? helpers.clamp(
+                    (state.currentSlideElapsedMs || 0) / totalMs,
+                    0,
+                    1,
+                  )
+                : 0;
+            el("timelineSeek").value = Math.round(progress * 100);
+            el("seekLabel").textContent = Math.round(progress * 100) + "%";
+
+            screen.style.animationName = slide.transition || "fadeIn";
+            screen.style.animationDuration = "1s";
+
+            const progressStrip = document.createElement("div");
+            progressStrip.className = "progress-strip";
+
+            state.slides.forEach((s, i) => {
+              const seg = document.createElement("div");
+              seg.className = "progress-seg";
+              const fill = document.createElement("div");
+              fill.className = "progress-fill";
+
+              if (i < state.currentIndex) fill.style.width = "100%";
+              else if (i === state.currentIndex)
+                fill.style.width = Math.round(progress * 100) + "%";
+              else fill.style.width = "0%";
+
+              seg.appendChild(fill);
+              progressStrip.appendChild(seg);
+            });
+
+            const topbar = document.createElement("div");
+            topbar.className = "screen-topbar";
+            topbar.innerHTML = `<span>${label}</span><span>${state.currentIndex + 1}/${state.slides.length}</span>`;
+
+            if (slide.mediaKind === "image" || slide.mediaKind === "custom") {
+              const img = document.createElement("img");
+              img.src = slide.url;
+              screen.appendChild(img);
+            } else if (slide.mediaKind === "video") {
+              const video = document.createElement("video");
+              video.src = slide.url;
+              video.muted = true;
+              video.autoplay = false;
+              video.loop = true;
+              video.playsInline = true;
+              video.currentTime = (state.currentSlideElapsedMs || 0) / 1000;
+              screen.appendChild(video);
+              video.play().catch(() => {});
+            } else if (slide.mediaKind === "text") {
+              ui.renderTextSlideBackground(screen, slide);
+            }
+
+            if ((slide.tintOpacity || 0) > 0) {
+              const tint = document.createElement("div");
+              tint.style.position = "absolute";
+              tint.style.inset = "0";
+              tint.style.background = slide.tintColor || "#000000";
+              tint.style.opacity = String(slide.tintOpacity || 0);
+              tint.style.zIndex = "2";
+              screen.appendChild(tint);
+            }
+
+            screen.appendChild(progressStrip);
+            screen.appendChild(topbar);
+            ui.renderOverlayPreview(screen, slide, progress);
+
+            info.textContent = `${slide.name || "Slide"} • ${slide.mediaKind} • ${slide.mediaKind === "video" ? "video" : slide.duration + "s"} • ${slide.transition} • ${label}`;
+          },
+        };
+
+        const colorUtil = {
+          hexToRgba(hex, alpha) {
+            if (!hex) return `rgba(0,0,0,${alpha})`;
+            let c = hex.replace("#", "").trim();
+            if (c.length === 3)
+              c = c
+                .split("")
+                .map((x) => x + x)
+                .join("");
+            const int = parseInt(c, 16);
+            const r = (int >> 16) & 255;
+            const g = (int >> 8) & 255;
+            const b = int & 255;
+            return `rgba(${r},${g},${b},${alpha})`;
+          },
+        };
+
+        const preview = {
+          toggleAutoplay() {
+            state.autoplay = !state.autoplay;
+            el("previewInfo").textContent =
+              `Autoplay is now ${state.autoplay ? "ON" : "OFF"}.`;
+          },
+
+          pause(silent = false) {
+            state.previewStopped = true;
+            if (state.previewRaf) cancelAnimationFrame(state.previewRaf);
+            const video = el("reelScreen").querySelector("video");
+            if (video) video.pause();
+            if (state.previewAudio) state.previewAudio.pause();
+            if (!silent) helpers.setGeneralStatus("Preview paused.");
+          },
+
+          stop(silent = false) {
+            preview.pause(true);
+            state.currentSlideElapsedMs = 0;
+            if (state.previewAudio) {
+              state.previewAudio.pause();
+              state.previewAudio.currentTime = 0;
+              state.previewAudio = null;
+            }
+            ui.renderPreview();
+            if (!silent) helpers.setGeneralStatus("Preview stopped.");
+          },
+
+          restartCurrent() {
+            state.currentSlideElapsedMs = 0;
+            ui.renderPreview();
+            helpers.setGeneralStatus("Current slide restarted.");
+          },
+
+          async play() {
+            if (!state.slides.length) {
+              alert("Please import slides first.");
+              return;
+            }
+
+            preview.stop(true);
+            state.previewStopped = false;
+
+            const musicFile = el("bgMusic").files[0];
+            if (musicFile) {
+              const musicUrl = URL.createObjectURL(musicFile);
+              state.previewAudio = new Audio(musicUrl);
+              state.previewAudio.play().catch(() => {});
+            }
+
+            const step = (timestamp) => {
+              if (state.previewStopped) return;
+
+              if (!state.previewStartedAt) {
+                state.previewStartedAt =
+                  timestamp - state.currentSlideElapsedMs;
+              }
+
+              const slide = helpers.getCurrentSlide();
+              if (!slide) return;
+
+              const totalMs =
+                slide.mediaKind === "video"
+                  ? slide.videoDurationMs || 10000
+                  : (slide.duration || 2) * 1000;
+              state.currentSlideElapsedMs = timestamp - state.previewStartedAt;
+
+              if (slide.mediaKind === "video") {
+                const v = el("reelScreen").querySelector("video");
+                if (v) {
+                  const targetTime = state.currentSlideElapsedMs / 1000;
+                  if (Math.abs(v.currentTime - targetTime) > 0.2) {
+                    try {
+                      v.currentTime = targetTime;
+                    } catch (e) {}
+                  }
+                }
+              }
+
+              ui.renderPreview();
+
+              if (state.currentSlideElapsedMs >= totalMs) {
+                if (!state.autoplay) {
+                  state.previewStopped = true;
+                  if (state.previewAudio) {
+                    state.previewAudio.pause();
+                    state.previewAudio = null;
+                  }
+                  helpers.setGeneralStatus("Slide ended. Autoplay is OFF.");
+                  return;
+                }
+
+                state.currentIndex =
+                  (state.currentIndex + 1) % state.slides.length;
+                state.currentSlideElapsedMs = 0;
+                state.previewStartedAt = timestamp;
+                ui.renderSlides();
+                ui.loadCurrentSlideIntoEditor();
+                ui.renderTimeline();
+              }
+
+              state.previewRaf = requestAnimationFrame(step);
+            };
+
+            state.previewStartedAt = 0;
+            state.previewRaf = requestAnimationFrame(step);
+            helpers.setGeneralStatus("Preview playing.");
+          },
+        };
+
+        const draw = {
+          getAnimationState(type, progress, width, height) {
+            progress = helpers.clamp(progress, 0, 1);
+            let alpha = 1,
+              scale = 1,
+              tx = 0,
+              ty = 0,
+              rotation = 0;
+
+            switch (type) {
+              case "fadeIn":
+                alpha = progress;
+                break;
+              case "zoomIn":
+                alpha = progress;
+                scale = 0.6 + 0.4 * progress;
+                break;
+              case "flipY":
+                alpha = progress;
+                scale = Math.abs(Math.cos((1 - progress) * Math.PI * 0.5));
+                scale = Math.max(scale, 0.05);
+                break;
+              case "rotateX":
+                alpha = progress;
+                scale = Math.abs(Math.cos((1 - progress) * Math.PI * 0.5));
+                scale = Math.max(scale, 0.05);
+                break;
+              case "bounceIn":
+                alpha = progress;
+                if (progress < 0.6)
+                  scale = 0.5 + (1.2 - 0.5) * (progress / 0.6);
+                else scale = 1.2 - 0.2 * ((progress - 0.6) / 0.4);
+                break;
+              case "slideUp":
+                alpha = progress;
+                ty = (1 - progress) * height;
+                break;
+              case "spinIn":
+                alpha = progress;
+                rotation = (1 - progress) * Math.PI * 2;
+                scale = 0.7 + 0.3 * progress;
+                break;
+            }
+
+            return { alpha, scale, tx, ty, rotation };
+          },
+
+          getKenBurnsState(type, progress, width, height) {
+            progress = helpers.clamp(progress, 0, 1);
+            let scale = 1,
+              tx = 0,
+              ty = 0;
+
+            switch (type) {
+              case "zoomInSlow":
+                scale = 1 + 0.12 * progress;
+                break;
+              case "zoomOutSlow":
+                scale = 1.12 - 0.12 * progress;
+                break;
+              case "panLeft":
+                tx = -width * 0.06 * progress;
+                scale = 1.08;
+                break;
+              case "panRight":
+                tx = width * 0.06 * progress;
+                scale = 1.08;
+                break;
+              case "panUp":
+                ty = -height * 0.06 * progress;
+                scale = 1.08;
+                break;
+              case "panDown":
+                ty = height * 0.06 * progress;
+                scale = 1.08;
+                break;
+            }
+
+            return { scale, tx, ty };
+          },
+
+          roundRect(ctx, x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(
+              x + width,
+              y + height,
+              x + width - radius,
+              y + height,
+            );
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+          },
+
+          drawWrappedText(ctx, text, x, y, maxWidth, lineHeightPx, align) {
+            if (!text) return;
+            const words = text.split(" ");
+            let line = "";
+            const lines = [];
+
+            for (let i = 0; i < words.length; i++) {
+              const testLine = line + words[i] + " ";
+              const w = ctx.measureText(testLine).width;
+              if (w > maxWidth && i > 0) {
+                lines.push(line.trim());
+                line = words[i] + " ";
+              } else {
+                line = testLine;
+              }
+            }
+            if (line.trim()) lines.push(line.trim());
+
+            const totalHeight = lines.length * lineHeightPx;
+            const startY = y - totalHeight / 2 + lineHeightPx / 2;
+
+            lines.forEach((ln, idx) => {
+              let drawX = x;
+              if (align === "left") drawX = 28;
+              if (align === "right") drawX = maxWidth + 18;
+              if ((ctx.lineWidth || 0) > 0)
+                ctx.strokeText(ln, drawX, startY + idx * lineHeightPx);
+              ctx.fillText(ln, drawX, startY + idx * lineHeightPx);
+            });
+          },
+
+          drawTextBackgroundCanvas(ctx, slide, width, height) {
+            const c1 = slide.textBg1 || "#d97706";
+            const c2 = slide.textBg2 || "#7c3aed";
+
+            if (slide.textBgStyle === "solid") {
+              ctx.fillStyle = c1;
+              ctx.fillRect(0, 0, width, height);
+            } else if (slide.textBgStyle === "radial") {
+              const grad = ctx.createRadialGradient(
+                width * 0.25,
+                height * 0.2,
+                10,
+                width * 0.5,
+                height * 0.5,
+                Math.max(width, height),
+              );
+              grad.addColorStop(0, c1);
+              grad.addColorStop(1, c2);
+              ctx.fillStyle = grad;
+              ctx.fillRect(0, 0, width, height);
+            } else {
+              const grad = ctx.createLinearGradient(0, 0, width, height);
+              grad.addColorStop(0, c1);
+              grad.addColorStop(1, c2);
+              ctx.fillStyle = grad;
+              ctx.fillRect(0, 0, width, height);
+            }
+
+            ctx.save();
+            ctx.globalAlpha = 0.12;
+            ctx.fillStyle = "#ffffff";
+            ctx.beginPath();
+            ctx.arc(
+              width * 0.82,
+              height * 0.14,
+              Math.min(width, height) * 0.18,
+              0,
+              Math.PI * 2,
+            );
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(
+              width * 0.12,
+              height * 0.9,
+              Math.min(width, height) * 0.22,
+              0,
+              Math.PI * 2,
+            );
+            ctx.fill();
+            ctx.restore();
+          },
+
+          drawOverlayOnCanvas(ctx, slide, width, height, progress) {
+            if (!slide || slide.overlayPosition === "hide" || !slide.caption)
+              return;
+
+            const padding = 14;
+            const boxHeight = Math.max(90, Math.round(height * 0.16));
+            let y = height - boxHeight - 14;
+            if (slide.overlayPosition === "top") y = 52;
+            if (slide.overlayPosition === "middle")
+              y = Math.round((height - boxHeight) / 2);
+
+            ctx.save();
+            ctx.fillStyle = colorUtil.hexToRgba(
+              slide.overlayColor || "#000000",
+              slide.overlayOpacity ?? 0.45,
+            );
+            draw.roundRect(ctx, padding, y, width - padding * 2, boxHeight, 16);
+            ctx.fill();
+
+            ctx.font = `bold ${slide.fontSize || 20}px ${slide.fontFamily || "Arial"}`;
+            ctx.textBaseline = "middle";
+            ctx.fillStyle = slide.textColor || "#ffffff";
+            ctx.lineWidth = slide.textStrokeWidth || 0;
+            ctx.strokeStyle = slide.textStrokeColor || "#000000";
+            ctx.shadowColor = "rgba(0,0,0,.9)";
+            ctx.shadowBlur = slide.textShadow ?? 12;
+
+            let textY = y + boxHeight / 2;
+            let textX = width / 2;
+            const maxWidth = width - 44;
+            const lineHeightPx = Math.max(
+              22,
+              Math.round((slide.fontSize || 20) * (slide.lineHeight || 1.2)),
+            );
+
+            let motionScale = 1;
+            let motionY = 0;
+
+            switch (slide.textMotion) {
+              case "floatUp":
+                motionY = (1 - progress) * 16;
+                break;
+              case "floatDown":
+                motionY = (progress - 1) * 16;
+                break;
+              case "zoomText":
+                motionScale = 0.9 + 0.1 * progress;
+                break;
+              case "pulseText":
+                motionScale = 1 + Math.sin(progress * Math.PI * 2) * 0.03;
+                break;
+            }
+
+            ctx.save();
+            ctx.translate(width / 2, textY + motionY);
+            ctx.scale(motionScale, motionScale);
+            ctx.translate(-width / 2, -(textY + motionY));
+
+            if ((slide.textAlign || "center") === "left") {
+              ctx.textAlign = "left";
+              draw.drawWrappedText(
+                ctx,
+                slide.caption,
+                28,
+                textY,
+                width - 56,
+                lineHeightPx,
+                "left",
+              );
+            } else if ((slide.textAlign || "center") === "right") {
+              ctx.textAlign = "right";
+              draw.drawWrappedText(
+                ctx,
+                slide.caption,
+                width - 28,
+                textY,
+                width - 56,
+                lineHeightPx,
+                "right",
+              );
+            } else {
+              ctx.textAlign = "center";
+              draw.drawWrappedText(
+                ctx,
+                slide.caption,
+                textX,
+                textY,
+                maxWidth,
+                lineHeightPx,
+                "center",
+              );
+            }
+
+            ctx.restore();
+            ctx.restore();
+          },
+
+          drawFrameBase(
+            ctx,
+            width,
+            height,
+            drawMedia,
+            slide,
+            elapsedMs,
+            totalMs,
+          ) {
+            const entranceProgress = Math.min(
+              elapsedMs / ANIMATION_DURATION,
+              1,
+            );
+            const anim = draw.getAnimationState(
+              slide.transition || "fadeIn",
+              entranceProgress,
+              width,
+              height,
+            );
+            const motionProgress =
+              totalMs > 0 ? Math.min(elapsedMs / totalMs, 1) : 0;
+            const kb = draw.getKenBurnsState(
+              slide.kenBurns || "none",
+              motionProgress,
+              width,
+              height,
+            );
+
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = "black";
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.save();
+            ctx.globalAlpha = anim.alpha;
+            ctx.translate(width / 2 + anim.tx, height / 2 + anim.ty);
+            ctx.rotate(anim.rotation);
+            ctx.scale(anim.scale * kb.scale, anim.scale * kb.scale);
+            ctx.translate(kb.tx, kb.ty);
+            drawMedia(ctx);
+            ctx.restore();
+
+            if ((slide.tintOpacity || 0) > 0) {
+              ctx.save();
+              ctx.globalAlpha = slide.tintOpacity || 0;
+              ctx.fillStyle = slide.tintColor || "#000000";
+              ctx.fillRect(0, 0, width, height);
+              ctx.restore();
+            }
+
+            draw.drawOverlayOnCanvas(ctx, slide, width, height, motionProgress);
+          },
+
+          async loadImageFromSlide(slide) {
+            return new Promise((resolve, reject) => {
+              const img = new Image();
+              img.onload = () => resolve(img);
+              img.onerror = reject;
+              img.src = slide.url;
+            });
+          },
+
+          async renderSlideToCanvas(slide, canvas, elapsedMs = 0) {
+            const { width, height } = helpers.getSize();
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            const totalMs =
+              slide.mediaKind === "video"
+                ? slide.videoDurationMs || 10000
+                : (slide.duration || 2) * 1000;
+
+            if (slide.mediaKind === "image" || slide.mediaKind === "custom") {
+              const img = await draw.loadImageFromSlide(slide);
+              const drawMedia = (ctx2) =>
+                ctx2.drawImage(img, -width / 2, -height / 2, width, height);
+              draw.drawFrameBase(
+                ctx,
+                width,
+                height,
+                drawMedia,
+                slide,
+                elapsedMs,
+                totalMs,
+              );
+            } else if (slide.mediaKind === "video") {
+              await new Promise((resolve, reject) => {
+                const video = document.createElement("video");
+                video.src = slide.url;
+                video.muted = true;
+                video.playsInline = true;
+                video.preload = "auto";
+                video.currentTime = elapsedMs / 1000;
+
+                video.onloadeddata = () => {
+                  const drawMedia = (ctx2) =>
+                    ctx2.drawImage(
+                      video,
+                      -width / 2,
+                      -height / 2,
+                      width,
+                      height,
+                    );
+                  draw.drawFrameBase(
+                    ctx,
+                    width,
+                    height,
+                    drawMedia,
+                    slide,
+                    elapsedMs,
+                    totalMs,
+                  );
+                  resolve();
+                };
+                video.onerror = reject;
+              });
+            } else if (slide.mediaKind === "text") {
+              const drawMedia = (ctx2) => {
+                ctx2.save();
+                ctx2.translate(-width / 2, -height / 2);
+                draw.drawTextBackgroundCanvas(ctx2, slide, width, height);
+                ctx2.restore();
+              };
+              draw.drawFrameBase(
+                ctx,
+                width,
+                height,
+                drawMedia,
+                slide,
+                elapsedMs,
+                totalMs,
+              );
+            }
+
+            return canvas;
+          },
+        };
+
+        const exporters = {
+          async recordAnimatedImageFrames(
+            slide,
+            ctx,
+            width,
+            height,
+            addGifFrame,
+            waitRealTime,
+          ) {
+            const totalMs = (slide.duration || 2) * 1000;
+            const totalFrames = Math.max(1, Math.round((totalMs / 1000) * FPS));
+            const frameDelay = Math.round(1000 / FPS);
+
+            let drawMedia;
+
+            if (slide.mediaKind === "text") {
+              drawMedia = (ctx2) => {
+                ctx2.save();
+                ctx2.translate(-width / 2, -height / 2);
+                draw.drawTextBackgroundCanvas(ctx2, slide, width, height);
+                ctx2.restore();
+              };
+            } else {
+              const img = await draw.loadImageFromSlide(slide);
+              drawMedia = (ctx2) => {
+                ctx2.drawImage(img, -width / 2, -height / 2, width, height);
+              };
+            }
+
+            for (let i = 0; i < totalFrames; i++) {
+              const elapsed = i * frameDelay;
+              draw.drawFrameBase(
+                ctx,
+                width,
+                height,
+                drawMedia,
+                slide,
+                elapsed,
+                totalMs,
+              );
+              if (addGifFrame) addGifFrame(frameDelay);
+              if (waitRealTime) await helpers.wait(frameDelay);
+            }
+          },
+
+          recordAnimatedVideoFrames(slide, ctx, width, height) {
+            return new Promise((resolve) => {
+              const video = document.createElement("video");
+              video.src = slide.url;
+              video.muted = true;
+              video.playsInline = true;
+              video.preload = "auto";
+              let rafId = null;
+              let startTs = null;
+
+              const cleanup = () => {
+                if (rafId) cancelAnimationFrame(rafId);
+                resolve();
+              };
+
+              const drawLoop = (ts) => {
+                if (startTs === null) startTs = ts;
+                const elapsed = ts - startTs;
+                const totalMs = Math.max(1, (video.duration || 10) * 1000);
+
+                const drawMedia = (ctx2) => {
+                  ctx2.drawImage(video, -width / 2, -height / 2, width, height);
+                };
+
+                draw.drawFrameBase(
+                  ctx,
+                  width,
+                  height,
+                  drawMedia,
+                  slide,
+                  elapsed,
+                  totalMs,
+                );
+
+                if (!video.paused && !video.ended) {
+                  rafId = requestAnimationFrame(drawLoop);
+                }
+              };
+
+              video.onloadedmetadata = () => {
+                slide.videoDurationMs = Math.max(
+                  1,
+                  (video.duration || 10) * 1000,
+                );
+              };
+              video.onended = cleanup;
+              video.onerror = async () => {
+                await helpers.wait(1500);
+                cleanup();
+              };
+              video.onloadeddata = () => {
+                video
+                  .play()
+                  .then(() => {
+                    rafId = requestAnimationFrame(drawLoop);
+                  })
+                  .catch(async () => {
+                    await helpers.wait(1000);
+                    cleanup();
+                  });
+              };
+            });
+          },
+
+          async exportGIF() {
+            helpers.clearStatuses();
+
+            if (!state.slides.length) {
+              alert("Please import slides first.");
+              return;
+            }
+
+            const { width, height } = helpers.getSize();
+            el("gifStatus").textContent = "Creating GIF...";
+
+            const gif = new GIF({
+              workers: 2,
+              quality: 10,
+              workerScript: "js/gif.worker.js",
+              width,
+              height,
+            });
+
+            const canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+
+            let processed = 0;
+            const eligible = state.slides.filter(
+              (s) => s.mediaKind !== "video",
+            );
+
+            if (!eligible.length) {
+              alert("GIF export works with image and text slides only.");
+              return;
+            }
+
+            for (const slide of eligible) {
+              try {
+                await exporters.recordAnimatedImageFrames(
+                  slide,
+                  ctx,
+                  width,
+                  height,
+                  (delay) => gif.addFrame(canvas, { copy: true, delay }),
+                  false,
+                );
+                processed++;
+                el("gifStatus").textContent =
+                  `Creating GIF... ${processed}/${eligible.length} slides processed`;
+              } catch (err) {
+                console.error("GIF export skipped slide:", slide.name, err);
+              }
+            }
+
+            gif.on("progress", (p) => {
+              el("gifStatus").textContent =
+                `Rendering GIF... ${Math.round(p * 100)}%`;
+            });
+
+            gif.on("finished", (blob) => {
+              const url = URL.createObjectURL(blob);
+              el("gifStatus").innerHTML =
+                `<a class="download-link" href="${url}" download="reel_v5.gif">⬇️ Download GIF</a>`;
+            });
+
+            gif.render();
+          },
+
+          async exportVideo() {
+            helpers.clearStatuses();
+
+            if (!state.slides.length) {
+              alert("Please import slides first.");
+              return;
+            }
+
+            const { width, height } = helpers.getSize();
+            el("videoStatus").textContent = "Rendering video... 0%";
+
+            const canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+
+            const stream = canvas.captureStream(FPS);
+            const recorder = new MediaRecorder(stream, {
+              mimeType: "video/webm",
+            });
+            const chunks = [];
+
+            recorder.ondataavailable = (e) => {
+              if (e.data && e.data.size > 0) chunks.push(e.data);
+            };
+
+            recorder.onstop = () => {
+              const blob = new Blob(chunks, { type: "video/webm" });
+              const url = URL.createObjectURL(blob);
+              el("videoStatus").innerHTML =
+                `<a class="download-link" href="${url}" download="reel_v5.webm">⬇️ Download video</a>`;
+            };
+
+            recorder.start();
+
+            for (let i = 0; i < state.slides.length; i++) {
+              const slide = state.slides[i];
+              el("videoStatus").textContent =
+                `Rendering video... ${Math.round((i / state.slides.length) * 100)}%`;
+
+              if (slide.mediaKind === "video") {
+                await exporters.recordAnimatedVideoFrames(
+                  slide,
+                  ctx,
+                  width,
+                  height,
+                );
+              } else {
+                await exporters.recordAnimatedImageFrames(
+                  slide,
+                  ctx,
+                  width,
+                  height,
+                  null,
+                  true,
+                );
+              }
+            }
+
+            el("videoStatus").textContent =
+              "Rendering video... finalizing file";
+            recorder.stop();
+          },
+
+          async exportVideoWithMusic() {
+            helpers.clearStatuses();
+
+            if (!state.slides.length) {
+              alert("Please import slides first.");
+              return;
+            }
+
+            const musicFile = el("bgMusic").files[0];
+            if (!musicFile) {
+              alert("Please choose a background music file.");
+              return;
+            }
+
+            const { width, height } = helpers.getSize();
+            el("videoStatus").textContent = "Rendering video with music... 0%";
+
+            const canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+
+            const videoStream = canvas.captureStream(FPS);
+            const audioContext = new (
+              window.AudioContext || window.webkitAudioContext
+            )();
+            const destination = audioContext.createMediaStreamDestination();
+
+            const musicBuffer = await musicFile.arrayBuffer();
+            const decoded = await audioContext.decodeAudioData(
+              musicBuffer.slice(0),
+            );
+
+            const sourceNode = audioContext.createBufferSource();
+            sourceNode.buffer = decoded;
+            sourceNode.connect(destination);
+
+            const mixedStream = new MediaStream([
+              ...videoStream.getVideoTracks(),
+              ...destination.stream.getAudioTracks(),
+            ]);
+
+            const recorder = new MediaRecorder(mixedStream, {
+              mimeType: "video/webm",
+            });
+            const chunks = [];
+
+            recorder.ondataavailable = (e) => {
+              if (e.data && e.data.size > 0) chunks.push(e.data);
+            };
+
+            recorder.onstop = () => {
+              const blob = new Blob(chunks, { type: "video/webm" });
+              const url = URL.createObjectURL(blob);
+              el("videoStatus").innerHTML =
+                `<a class="download-link" href="${url}" download="reel_v5_with_music.webm">⬇️ Download reel with music</a>`;
+            };
+
+            recorder.start();
+            sourceNode.start(0);
+
+            for (let i = 0; i < state.slides.length; i++) {
+              const slide = state.slides[i];
+              el("videoStatus").textContent =
+                `Rendering video with music... ${Math.round((i / state.slides.length) * 100)}%`;
+
+              if (slide.mediaKind === "video") {
+                await exporters.recordAnimatedVideoFrames(
+                  slide,
+                  ctx,
+                  width,
+                  height,
+                );
+              } else {
+                await exporters.recordAnimatedImageFrames(
+                  slide,
+                  ctx,
+                  width,
+                  height,
+                  null,
+                  true,
+                );
+              }
+            }
+
+            recorder.stop();
+            sourceNode.stop();
+          },
+
+          async exportCoverThumbnail() {
+            helpers.clearStatuses();
+
+            if (!state.slides.length) {
+              alert("Please import slides first.");
+              return;
+            }
+
+            const slide = state.slides[state.coverIndex];
+            const canvas = document.createElement("canvas");
+            await draw.renderSlideToCanvas(slide, canvas, 0);
+
+            canvas.toBlob((blob) => {
+              const url = URL.createObjectURL(blob);
+              el("videoStatus").innerHTML =
+                `<a class="download-link" href="${url}" download="cover_thumbnail.png">⬇️ Download cover thumbnail</a>`;
+            }, "image/png");
+          },
+
+          async exportSnapshotPack() {
+            helpers.clearStatuses();
+
+            if (!state.slides.length) {
+              alert("Please import slides first.");
+              return;
+            }
+
+            const zip = new JSZip();
+            const canvas = document.createElement("canvas");
+
+            for (let i = 0; i < state.slides.length; i++) {
+              const slide = state.slides[i];
+              el("videoStatus").textContent =
+                `Creating snapshot pack... ${i + 1}/${state.slides.length}`;
+
+              const elapsedMs = slide.mediaKind === "video" ? 300 : 0;
+              await draw.renderSlideToCanvas(slide, canvas, elapsedMs);
+
+              const blob = await new Promise((resolve) =>
+                canvas.toBlob(resolve, "image/png"),
+              );
+              zip.file(
+                String(i + 1).padStart(2, "0") +
+                  "_" +
+                  (slide.name || "slide").replace(/[^\w\-]+/g, "_") +
+                  ".png",
+                blob,
+              );
+            }
+
+            const zipBlob = await zip.generateAsync(
+              { type: "blob" },
+              (meta) => {
+                el("videoStatus").textContent =
+                  `Packing snapshots... ${Math.round(meta.percent)}%`;
+              },
+            );
+
+            const url = URL.createObjectURL(zipBlob);
+            el("videoStatus").innerHTML =
+              `<a class="download-link" href="${url}" download="snapshot_pack_v5.zip">⬇️ Download snapshot pack</a>`;
+          },
+        };
+
+        const storage = {
+          buildProjectData() {
+            return {
+              app: "Reel Maker | Champak Roy",
+              version: 5,
+              ratio: state.ratio,
+              coverIndex: state.coverIndex,
+              currentIndex: state.currentIndex,
+              slides: state.slides.map((slide) => ({
+                id: slide.id,
+                name: slide.name,
+                url: slide.url,
+                sourceType: slide.sourceType,
+                mediaKind: slide.mediaKind,
+                caption: slide.caption,
+                duration: slide.duration,
+                transition: slide.transition,
+                fontSize: slide.fontSize,
+                fontFamily: slide.fontFamily,
+                textColor: slide.textColor,
+                textStrokeColor: slide.textStrokeColor,
+                textStrokeWidth: slide.textStrokeWidth,
+                textShadow: slide.textShadow,
+                overlayOpacity: slide.overlayOpacity,
+                overlayBlur: slide.overlayBlur,
+                overlayColor: slide.overlayColor,
+                overlayPosition: slide.overlayPosition,
+                textAlign: slide.textAlign,
+                lineHeight: slide.lineHeight,
+                tintColor: slide.tintColor,
+                tintOpacity: slide.tintOpacity,
+                kenBurns: slide.kenBurns,
+                textMotion: slide.textMotion,
+                textBgStyle: slide.textBgStyle,
+                textBg1: slide.textBg1,
+                textBg2: slide.textBg2,
+                synthetic: slide.synthetic,
+              })),
+            };
+          },
+
+          saveProjectJson() {
+            if (!state.slides.length) {
+              alert("Please import slides first.");
+              return;
+            }
+
+            const data = storage.buildProjectData();
+            const blob = new Blob([JSON.stringify(data, null, 2)], {
+              type: "application/json",
+            });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "reel_project_v5_ultra_pro.json";
+            link.click();
+
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+            helpers.setGeneralStatus("Project JSON saved.");
+          },
+
+          async handleProjectLoad(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            try {
+              const text = await file.text();
+              const project = JSON.parse(text);
+
+              if (!project || !Array.isArray(project.slides)) {
+                alert("Invalid project JSON.");
+                return;
+              }
+
+              history.pushSnapshot();
+              history.restoreProject(project);
+              alert("Project loaded. Complete it before reloading the page.");
+            } catch (err) {
+              console.error(err);
+              alert("Could not load project JSON.");
+            } finally {
+              event.target.value = "";
+            }
+          },
+        };
+
+        const actions = {
+          importSlides() {
+            helpers.clearStatuses();
+            const files = Array.from(el("mediaInput").files || []);
+            if (!files.length) {
+              alert("Please choose media files first.");
+              return;
+            }
+
+            history.pushSnapshot();
+            preview.stop(true);
+            memory.cleanupAllUrls();
+            state.slides = [];
+
+            try {
+              state.slides = files.map((file, index) =>
+                factories.makeSlideObject(file, index),
+              );
+            } catch (err) {
+              alert(err.message || "Could not import files.");
+              return;
+            }
+
+            state.currentIndex = 0;
+            state.coverIndex = 0;
+            state.currentSlideElapsedMs = 0;
+
+            ui.renderSlides();
+            ui.loadCurrentSlideIntoEditor();
+            ui.renderPreview();
+            ui.renderTimeline();
+            helpers.setGeneralStatus("Slides imported.");
+          },
+
+          addIntroSlide() {
+            history.pushSnapshot();
+            const slide = factories.makeSyntheticSlide(
+              "Welcome",
+              "Your story begins here",
+              "#d97706",
+              "#7c3aed",
+            );
+            state.slides.unshift(slide);
+            state.currentIndex = 0;
+            state.coverIndex = 0;
+            state.currentSlideElapsedMs = 0;
+            ui.renderSlides();
+            ui.loadCurrentSlideIntoEditor();
+            ui.renderPreview();
+            ui.renderTimeline();
+          },
+
+          addOutroSlide() {
+            history.pushSnapshot();
+            const slide = factories.makeSyntheticSlide(
+              "Thank You",
+              "See you in the next reel",
+              "#1f2937",
+              "#d97706",
+            );
+            state.slides.push(slide);
+            if (state.currentIndex < 0) state.currentIndex = 0;
+            ui.renderSlides();
+            ui.loadCurrentSlideIntoEditor();
+            ui.renderPreview();
+            ui.renderTimeline();
+          },
+
+          addTextSlide() {
+            history.pushSnapshot();
+            const slide = factories.makeTextSlide();
+            const insertAt =
+              state.currentIndex >= 0 ? state.currentIndex + 1 : 0;
+            state.slides.splice(insertAt, 0, slide);
+            state.currentIndex = insertAt;
+            state.currentSlideElapsedMs = 0;
+            ui.renderSlides();
+            ui.loadCurrentSlideIntoEditor();
+            ui.renderPreview();
+            ui.renderTimeline();
+          },
+
+          saveCurrentSlide() {
+            const slide = helpers.getCurrentSlide();
+            if (!slide) return;
+
+            history.pushSnapshot();
+
+            slide.name = el("slideName").value.trim() || "Slide";
+            slide.caption = el("slideCaption").value.trim();
+            slide.duration = Math.max(
+              1,
+              parseInt(el("slideDuration").value || "2", 10),
+            );
+            slide.transition = el("slideTransition").value;
+            slide.fontSize = Math.max(
+              16,
+              parseInt(el("slideFontSize").value || "20", 10),
+            );
+            slide.fontFamily = el("slideFontFamily").value;
+            slide.textColor = el("slideTextColor").value;
+            slide.textStrokeColor = el("slideTextStrokeColor").value;
+            slide.textStrokeWidth = parseInt(
+              el("slideTextStrokeWidth").value || "0",
+              10,
+            );
+            slide.textShadow = parseInt(
+              el("slideTextShadow").value || "12",
+              10,
+            );
+            slide.overlayOpacity = helpers.clamp(
+              parseFloat(el("slideOverlayOpacity").value || "0.45"),
+              0,
+              0.95,
+            );
+            slide.overlayBlur = helpers.clamp(
+              parseInt(el("slideOverlayBlur").value || "4", 10),
+              0,
+              20,
+            );
+            slide.overlayColor = el("slideOverlayColor").value;
+            slide.overlayPosition = el("slideOverlayPosition").value;
+            slide.textAlign = el("slideTextAlign").value;
+            slide.lineHeight = helpers.clamp(
+              parseFloat(el("slideLineHeight").value || "1.2"),
+              1,
+              2,
+            );
+            slide.tintColor = el("slideTintColor").value;
+            slide.tintOpacity = helpers.clamp(
+              parseFloat(el("slideTintOpacity").value || "0"),
+              0,
+              0.85,
+            );
+            slide.kenBurns = el("slideKenBurns").value;
+            slide.textMotion = el("slideTextMotion").value;
+            slide.textBgStyle = el("slideTextBgStyle").value;
+            slide.textBg1 = el("slideTextBg1").value;
+            slide.textBg2 = el("slideTextBg2").value;
+
+            ui.renderSlides();
+            ui.renderPreview();
+            ui.renderTimeline();
+            helpers.setGeneralStatus("Slide saved.");
+          },
+
+          duplicateCurrentSlide() {
+            const slide = helpers.getCurrentSlide();
+            if (!slide) return;
+
+            history.pushSnapshot();
+
+            const copy = {
+              ...JSON.parse(JSON.stringify(slide)),
+              id: helpers.makeId(),
+            };
+
+            if (slide.sourceType === "blob" && slide.file) {
+              copy.file = slide.file;
+              copy.url = slide.url;
+            }
+
+            state.slides.splice(state.currentIndex + 1, 0, copy);
+            state.currentIndex += 1;
+            state.currentSlideElapsedMs = 0;
+            ui.renderSlides();
+            ui.loadCurrentSlideIntoEditor();
+            ui.renderPreview();
+            ui.renderTimeline();
+          },
+
+          selectSlide(index) {
+            state.currentIndex = index;
+            state.currentSlideElapsedMs = 0;
+            ui.renderSlides();
+            ui.loadCurrentSlideIntoEditor();
+            ui.renderPreview();
+            ui.renderTimeline();
+          },
+
+          setCover(index) {
+            history.pushSnapshot();
+            state.coverIndex = index;
+            ui.renderSlides();
+            ui.renderTimeline();
+          },
+
+          markAsCover() {
+            if (state.currentIndex >= 0) {
+              history.pushSnapshot();
+              state.coverIndex = state.currentIndex;
+              ui.renderSlides();
+              ui.renderTimeline();
+            }
+          },
+
+          prevSlide() {
+            if (!state.slides.length) return;
+            state.currentIndex =
+              (state.currentIndex - 1 + state.slides.length) %
+              state.slides.length;
+            state.currentSlideElapsedMs = 0;
+            ui.renderSlides();
+            ui.loadCurrentSlideIntoEditor();
+            ui.renderPreview();
+            ui.renderTimeline();
+          },
+
+          nextSlide() {
+            if (!state.slides.length) return;
+            state.currentIndex = (state.currentIndex + 1) % state.slides.length;
+            state.currentSlideElapsedMs = 0;
+            ui.renderSlides();
+            ui.loadCurrentSlideIntoEditor();
+            ui.renderPreview();
+            ui.renderTimeline();
+          },
+
+          jumpToCover() {
+            if (!state.slides.length) return;
+            state.currentIndex = state.coverIndex;
+            state.currentSlideElapsedMs = 0;
+            ui.renderSlides();
+            ui.loadCurrentSlideIntoEditor();
+            ui.renderPreview();
+            ui.renderTimeline();
+          },
+
+          removeCurrentSlide() {
+            if (state.currentIndex < 0 || !state.slides.length) return;
+
+            history.pushSnapshot();
+
+            const removed = state.slides.splice(state.currentIndex, 1)[0];
+            if (
+              removed &&
+              removed.url &&
+              removed.sourceType === "blob" &&
+              removed.synthetic
+            ) {
+              try {
+                URL.revokeObjectURL(removed.url);
+              } catch (e) {}
+            }
+
+            if (!state.slides.length) {
+              state.currentIndex = -1;
+              state.coverIndex = 0;
+            } else {
+              state.currentIndex = Math.min(
+                state.currentIndex,
+                state.slides.length - 1,
+              );
+              if (state.coverIndex >= state.slides.length) state.coverIndex = 0;
+            }
+
+            state.currentSlideElapsedMs = 0;
+            ui.renderSlides();
+            ui.loadCurrentSlideIntoEditor();
+            ui.renderPreview();
+            ui.renderTimeline();
+          },
+
+          moveSlideUp(index) {
+            if (index <= 0) return;
+            actions.swapSlides(index, index - 1);
+          },
+
+          moveSlideDown(index) {
+            if (index >= state.slides.length - 1) return;
+            actions.swapSlides(index, index + 1);
+          },
+
+          swapSlides(a, b) {
+            history.pushSnapshot();
+
+            [state.slides[a], state.slides[b]] = [
+              state.slides[b],
+              state.slides[a],
+            ];
+
+            if (state.currentIndex === a) state.currentIndex = b;
+            else if (state.currentIndex === b) state.currentIndex = a;
+
+            if (state.coverIndex === a) state.coverIndex = b;
+            else if (state.coverIndex === b) state.coverIndex = a;
+
+            ui.renderSlides();
+            ui.renderPreview();
+            ui.renderTimeline();
+            ui.loadCurrentSlideIntoEditor();
+          },
+
+          shuffleSlides() {
+            if (state.slides.length < 2) return;
+            history.pushSnapshot();
+
+            const currentSlideId = helpers.getCurrentSlide()?.id;
+            const coverSlideId = state.slides[state.coverIndex]?.id;
+
+            for (let i = state.slides.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [state.slides[i], state.slides[j]] = [
+                state.slides[j],
+                state.slides[i],
+              ];
+            }
+
+            state.currentIndex = Math.max(
+              0,
+              state.slides.findIndex((s) => s.id === currentSlideId),
+            );
+            state.coverIndex = Math.max(
+              0,
+              state.slides.findIndex((s) => s.id === coverSlideId),
+            );
+
+            ui.renderSlides();
+            ui.loadCurrentSlideIntoEditor();
+            ui.renderPreview();
+            ui.renderTimeline();
+          },
+
+          undo() {
+            if (!state.history.length) return;
+
+            const current = helpers.safeCloneData();
+            state.future.push(current);
+            const previous = state.history.pop();
+            history.restoreProject(previous);
+            helpers.setGeneralStatus("Undo applied.");
+            helpers.updateMetaChips();
+          },
+
+          redo() {
+            if (!state.future.length) return;
+
+            const current = helpers.safeCloneData();
+            state.history.push(current);
+            const next = state.future.pop();
+            history.restoreProject(next);
+            helpers.setGeneralStatus("Redo applied.");
+            helpers.updateMetaChips();
+          },
+
+          handleDragStart(event) {
+            const card = event.currentTarget;
+            state.dragIndex = Number(card.dataset.index);
+            card.classList.add("dragging");
+            event.dataTransfer.effectAllowed = "move";
+          },
+
+          handleDragOver(event) {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = "move";
+          },
+
+          handleDrop(event) {
+            event.preventDefault();
+            const toIndex = Number(event.currentTarget.dataset.index);
+            const fromIndex = state.dragIndex;
+
+            if (
+              Number.isInteger(fromIndex) &&
+              Number.isInteger(toIndex) &&
+              fromIndex !== toIndex
+            ) {
+              history.pushSnapshot();
+              const [moved] = state.slides.splice(fromIndex, 1);
+              state.slides.splice(toIndex, 0, moved);
+
+              if (state.currentIndex === fromIndex)
+                state.currentIndex = toIndex;
+              else if (
+                fromIndex < state.currentIndex &&
+                toIndex >= state.currentIndex
+              )
+                state.currentIndex--;
+              else if (
+                fromIndex > state.currentIndex &&
+                toIndex <= state.currentIndex
+              )
+                state.currentIndex++;
+
+              if (state.coverIndex === fromIndex) state.coverIndex = toIndex;
+              else if (
+                fromIndex < state.coverIndex &&
+                toIndex >= state.coverIndex
+              )
+                state.coverIndex--;
+              else if (
+                fromIndex > state.coverIndex &&
+                toIndex <= state.coverIndex
+              )
+                state.coverIndex++;
+
+              ui.renderSlides();
+              ui.renderTimeline();
+            }
+
+            state.dragIndex = null;
+          },
+
+          handleDragEnd(event) {
+            event.currentTarget.classList.remove("dragging");
+            state.dragIndex = null;
+          },
+        };
+
+        ui.init();
+        ui.setRatioUI();
+        ui.renderSlides();
+        ui.renderTimeline();
+        ui.renderPreview();
+
+        return { state, helpers, ui, preview, exporters, storage, actions };
+      })();
+    </script>
+  </body>
+</html>

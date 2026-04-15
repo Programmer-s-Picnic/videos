@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Intro - Programmer's Picnic</title>
+
+    <style>
+      :root {
+        --bg: #0b0b0b;
+        --glow: #f59e0b;
+        --glow2: #d97706;
+        --text: #ffffff;
+      }
+
+      body {
+        margin: 0;
+        height: 100vh;
+        background: radial-gradient(circle at center, #1a1200, #000);
+        font-family: "Inter", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        color: var(--text);
+      }
+
+      /* floating particles */
+      .particles {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: repeating-linear-gradient(
+          transparent,
+          transparent 2px,
+          rgba(245, 158, 11, 0.05) 3px
+        );
+        animation: move 10s linear infinite;
+      }
+
+      @keyframes move {
+        from {
+          transform: translateY(0);
+        }
+        to {
+          transform: translateY(-200px);
+        }
+      }
+
+      .container {
+        text-align: center;
+        z-index: 2;
+      }
+
+      /* logo text */
+      .title {
+        font-size: 52px;
+        letter-spacing: 2px;
+        opacity: 0;
+        animation: fadeIn 2s forwards;
+      }
+
+      .subtitle {
+        font-size: 22px;
+        margin-top: 10px;
+        opacity: 0;
+        animation: fadeIn 3s forwards;
+      }
+
+      /* typing line */
+      .typing {
+        margin-top: 25px;
+        font-size: 26px;
+        border-right: 2px solid var(--glow);
+        white-space: nowrap;
+        overflow: hidden;
+        width: 0;
+        animation:
+          typing 3s steps(25, end) forwards,
+          blink 1s infinite;
+        animation-delay: 2s;
+      }
+
+      @keyframes typing {
+        from {
+          width: 0;
+        }
+        to {
+          width: 260px;
+        }
+      }
+
+      @keyframes blink {
+        50% {
+          border-color: transparent;
+        }
+      }
+
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* glow circle */
+      .glow {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(
+          circle,
+          rgba(245, 158, 11, 0.3),
+          transparent
+        );
+        filter: blur(60px);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="particles"></div>
+    <div class="glow"></div>
+
+    <div class="container">
+      <div class="title">Programmer’s Picnic</div>
+      <div class="subtitle">with Champak Roy</div>
+      <div class="typing">Learn. Build. Master.</div>
+    </div>
+  </body>
+</html>

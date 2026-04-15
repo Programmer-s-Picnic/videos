@@ -1,0 +1,183 @@
+{
+  "app": "Reel Maker V5 Ultra Pro",
+  "version": 5,
+  "ratio": "reel",
+  "coverIndex": 0,
+  "currentIndex": 0,
+  "slides": [
+    {
+      "id": "s0",
+      "name": "Slide 1",
+      "url": "pics/0.jpg",
+      "sourceType": "url",
+      "mediaKind": "image",
+      "caption": "Let’s learn something powerful today",
+      "duration": 2,
+      "transition": "zoomIn",
+      "fontSize": 28,
+      "fontFamily": "Arial",
+      "textColor": "#ffffff",
+      "textStrokeColor": "#000000",
+      "textStrokeWidth": 0,
+      "textShadow": 16,
+      "overlayOpacity": 0.4,
+      "overlayBlur": 4,
+      "overlayColor": "#000000",
+      "overlayPosition": "bottom",
+      "textAlign": "center",
+      "lineHeight": 1.2,
+      "tintColor": "#000000",
+      "tintOpacity": 0.1,
+      "kenBurns": "zoomInSlow",
+      "textMotion": "zoomText",
+      "textBgStyle": "gradient",
+      "textBg1": "#d97706",
+      "textBg2": "#7c3aed",
+      "synthetic": false
+    },
+
+    {
+      "id": "s1",
+      "name": "Slide 2",
+      "url": "pics/1.jpg",
+      "sourceType": "url",
+      "mediaKind": "image",
+      "caption": "Step by step visuals make learning easier",
+      "duration": 2,
+      "transition": "fadeIn",
+      "fontSize": 26,
+      "fontFamily": "Arial",
+      "textColor": "#ffffff",
+      "textShadow": 14,
+      "overlayOpacity": 0.45,
+      "overlayPosition": "bottom",
+      "kenBurns": "panLeft"
+    },
+
+    {
+      "id": "s2",
+      "name": "Slide 3",
+      "url": "pics/2.jpg",
+      "sourceType": "url",
+      "mediaKind": "image",
+      "caption": "Observe carefully what is happening",
+      "duration": 2,
+      "transition": "slideUp",
+      "fontSize": 26,
+      "overlayOpacity": 0.45,
+      "kenBurns": "panRight"
+    },
+
+    {
+      "id": "s3",
+      "name": "Slide 4",
+      "url": "pics/3.jpg",
+      "sourceType": "url",
+      "mediaKind": "image",
+      "caption": "Compare elements one by one",
+      "duration": 2,
+      "transition": "flipY",
+      "fontSize": 28,
+      "overlayOpacity": 0.45,
+      "kenBurns": "zoomOutSlow"
+    },
+
+    {
+      "id": "s4",
+      "name": "Slide 5",
+      "url": "pics/4.jpg",
+      "sourceType": "url",
+      "mediaKind": "image",
+      "caption": "Swap if needed",
+      "duration": 2,
+      "transition": "bounceIn",
+      "fontSize": 30,
+      "overlayOpacity": 0.45,
+      "kenBurns": "panUp"
+    },
+
+    {
+      "id": "s5",
+      "name": "Slide 6",
+      "url": "pics/5.jpg",
+      "sourceType": "url",
+      "mediaKind": "image",
+      "caption": "Repeat the process",
+      "duration": 2,
+      "transition": "zoomIn",
+      "fontSize": 28,
+      "overlayOpacity": 0.45,
+      "kenBurns": "panDown"
+    },
+
+    {
+      "id": "s6",
+      "name": "Slide 7",
+      "url": "pics/6.jpg",
+      "sourceType": "url",
+      "mediaKind": "image",
+      "caption": "Patterns start to appear",
+      "duration": 2,
+      "transition": "fadeIn",
+      "fontSize": 26,
+      "overlayOpacity": 0.45,
+      "kenBurns": "zoomInSlow"
+    },
+
+    {
+      "id": "s7",
+      "name": "Slide 8",
+      "url": "pics/7.jpg",
+      "sourceType": "url",
+      "mediaKind": "image",
+      "caption": "The system becomes clear",
+      "duration": 2,
+      "transition": "slideUp",
+      "fontSize": 26,
+      "overlayOpacity": 0.45,
+      "kenBurns": "zoomOutSlow"
+    },
+
+    {
+      "id": "s8",
+      "name": "Slide 9",
+      "url": "pics/8.jpg",
+      "sourceType": "url",
+      "mediaKind": "image",
+      "caption": "Everything starts falling into place",
+      "duration": 2,
+      "transition": "flipY",
+      "fontSize": 28,
+      "overlayOpacity": 0.45,
+      "kenBurns": "panLeft"
+    },
+
+    {
+      "id": "s9",
+      "name": "Slide 10",
+      "url": "pics/9.jpg",
+      "sourceType": "url",
+      "mediaKind": "image",
+      "caption": "Final understanding achieved",
+      "duration": 2,
+      "transition": "bounceIn",
+      "fontSize": 30,
+      "overlayOpacity": 0.45,
+      "kenBurns": "panRight"
+    },
+
+    {
+      "id": "s10",
+      "name": "Slide 11",
+      "url": "pics/10.jpg",
+      "sourceType": "url",
+      "mediaKind": "image",
+      "caption": "Keep learning with Programmer’s Picnic",
+      "duration": 3,
+      "transition": "spinIn",
+      "fontSize": 28,
+      "overlayOpacity": 0.5,
+      "kenBurns": "zoomInSlow"
+    }
+  ]
+}
