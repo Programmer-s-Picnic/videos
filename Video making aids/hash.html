@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Password Hash Generator | Programmer's Picnic</title>
+    <meta
+      name="description"
+      content="Generate SHA-256 hashes for use inside Programmer's Picnic pwd.js."
+    />
+    <style>
+      :root {
+        --bg: #fff8eb;
+        --panel: #ffffff;
+        --panel2: #fff3d6;
+        --text: #1f2937;
+        --muted: #6b7280;
+        --brand: #d97706;
+        --brand2: #f59e0b;
+        --line: #ecd8ac;
+        --good: #166534;
+        --bad: #991b1b;
+        --shadow: 0 18px 44px rgba(217, 119, 6, 0.12);
+        --radius: 20px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Arial,
+          sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(
+            circle at top right,
+            rgba(245, 158, 11, 0.16),
+            transparent 22%
+          ),
+          radial-gradient(
+            circle at bottom left,
+            rgba(217, 119, 6, 0.1),
+            transparent 24%
+          ),
+          var(--bg);
+      }
+
+      .wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, #fff7e8, #ffffff);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+        padding: 24px;
+        margin-bottom: 20px;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 12px;
+        border: 1px solid #f0d08d;
+        background: #fff0c7;
+        color: #8a5206;
+        margin-bottom: 10px;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0 0 12px;
+      }
+
+      p {
+        line-height: 1.65;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 20px;
+      }
+
+      @media (max-width: 900px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 20px;
+      }
+
+      .field {
+        margin-bottom: 16px;
+      }
+
+      label {
+        display: block;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+
+      input,
+      textarea,
+      button {
+        font: inherit;
+      }
+
+      input[type="password"],
+      textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        background: #fffdfa;
+        color: var(--text);
+        border-radius: 14px;
+        padding: 12px 14px;
+        outline: none;
+      }
+
+      textarea {
+        min-height: 110px;
+        resize: vertical;
+      }
+
+      input:focus,
+      textarea:focus {
+        border-color: var(--brand);
+        box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.1);
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      button {
+        border: none;
+        cursor: pointer;
+        border-radius: 14px;
+        padding: 12px 16px;
+        font-weight: 800;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--brand), var(--brand2));
+        color: #fff;
+        box-shadow: 0 10px 24px rgba(217, 119, 6, 0.2);
+      }
+
+      .btn-secondary {
+        background: #fff;
+        color: var(--brand);
+        border: 1px solid var(--line);
+      }
+
+      .output {
+        background: #fffaf2;
+        border: 1px dashed #e5c98c;
+        border-radius: 16px;
+        padding: 14px;
+        word-break: break-word;
+        font-family:
+          ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        min-height: 60px;
+      }
+
+      .warn {
+        color: var(--bad);
+        font-weight: 700;
+      }
+
+      .small {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .code {
+        background: #1f2937;
+        color: #f9fafb;
+        border-radius: 16px;
+        padding: 14px;
+        overflow: auto;
+        font-size: 14px;
+        line-height: 1.6;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .pill {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 999px;
+        background: #fff4d6;
+        border: 1px solid var(--line);
+        margin: 0 6px 6px 0;
+        font-size: 12px;
+        font-weight: 700;
+        color: #8a5206;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <section class="hero">
+        <div class="badge">Admin Utility</div>
+        <h1>Password Hash Generator</h1>
+        <p class="muted">
+          Generate a SHA-256 hash for direct use inside your dateless
+          <code>pwd.js</code>.
+        </p>
+        <div>
+          <span class="pill">No server needed</span>
+          <span class="pill">Runs in browser</span>
+          <span class="pill">SHA-256</span>
+          <span class="pill">Dateless logic</span>
+        </div>
+      </section>
+
+      <div class="grid">
+        <section class="card">
+          <h2>Generate Hash</h2>
+
+          <div class="field">
+            <label for="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="Enter the raw password"
+              autocomplete="new-password"
+            />
+          </div>
+
+          <div class="field">
+            <label for="preview">String being hashed</label>
+            <textarea id="preview" readonly></textarea>
+          </div>
+
+          <div class="actions">
+            <button class="btn-primary" id="generateBtn" type="button">
+              Generate hash
+            </button>
+            <button class="btn-secondary" id="copyHashBtn" type="button">
+              Copy hash
+            </button>
+            <button class="btn-secondary" id="copyConfigBtn" type="button">
+              Copy pwd.js line
+            </button>
+            <button class="btn-secondary" id="clearBtn" type="button">
+              Clear
+            </button>
+          </div>
+
+          <div class="field" style="margin-top: 16px">
+            <label>SHA-256 hash</label>
+            <div id="hashOutput" class="output"></div>
+          </div>
+
+          <div class="field">
+            <label>Line to paste into <code>pwd.js</code></label>
+            <div id="configOutput" class="code"></div>
+          </div>
+        </section>
+
+        <aside class="card">
+          <h2>How to use this with pwd.js</h2>
+          <ol>
+            <li>Enter the password you want to protect the page with.</li>
+            <li>Generate the SHA-256 hash.</li>
+            <li>Copy the generated line.</li>
+            <li>Paste it into your <code>pwd.js</code> file.</li>
+          </ol>
+
+          <h3>Compatible logic</h3>
+          <p class="small">
+            Your current <code>pwd.js</code> is now dateless. It simply hashes
+            the entered password and compares it with the stored
+            <code>PASSWORD_HASH</code>.
+          </p>
+
+          <div class="code">var PASSWORD_HASH = "paste_hash_here";</div>
+
+          <h3>What gets hashed</h3>
+          <p class="small">
+            Only the raw password is hashed now. No date is added. No rotation
+            formula is used.
+          </p>
+
+          <div class="code">sha256(password)</div>
+
+          <h3>Important warning</h3>
+          <p class="warn">This is still client-side protection only.</p>
+          <p class="small">
+            It is suitable for lightweight lesson gating on static sites, but it
+            is not true server-side security.
+          </p>
+        </aside>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        "use strict";
+
+        const els = {
+          password: document.getElementById("password"),
+          preview: document.getElementById("preview"),
+          hashOutput: document.getElementById("hashOutput"),
+          configOutput: document.getElementById("configOutput"),
+          generateBtn: document.getElementById("generateBtn"),
+          copyHashBtn: document.getElementById("copyHashBtn"),
+          copyConfigBtn: document.getElementById("copyConfigBtn"),
+          clearBtn: document.getElementById("clearBtn"),
+        };
+
+        function buildSourceString() {
+          return els.password.value || "";
+        }
+
+        function refreshPreview() {
+          els.preview.value = buildSourceString();
+        }
+
+        async function sha256Hex(text) {
+          const data = new TextEncoder().encode(text);
+          const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+          const bytes = Array.from(new Uint8Array(hashBuffer));
+          return bytes.map((b) => b.toString(16).padStart(2, "0")).join("");
+        }
+
+        async function generate() {
+          refreshPreview();
+          const source = buildSourceString();
+
+          if (!source) {
+            els.hashOutput.textContent = "Enter a password first.";
+            els.configOutput.textContent = "";
+            return;
+          }
+
+          if (!window.crypto || !window.crypto.subtle || !window.TextEncoder) {
+            els.hashOutput.textContent =
+              "This browser does not support secure SHA-256 hashing.";
+            els.configOutput.textContent = "";
+            return;
+          }
+
+          const hash = await sha256Hex(source);
+          els.hashOutput.textContent = hash;
+          els.configOutput.textContent = `var PASSWORD_HASH = "${hash}";`;
+        }
+
+        async function copyText(text) {
+          if (!text) return;
+          await navigator.clipboard.writeText(text);
+        }
+
+        function clearAll() {
+          els.password.value = "";
+          els.preview.value = "";
+          els.hashOutput.textContent = "";
+          els.configOutput.textContent = "";
+          els.password.focus();
+        }
+
+        els.password.addEventListener("input", refreshPreview);
+        els.generateBtn.addEventListener("click", generate);
+        els.copyHashBtn.addEventListener("click", async function () {
+          await copyText(els.hashOutput.textContent.trim());
+        });
+        els.copyConfigBtn.addEventListener("click", async function () {
+          await copyText(els.configOutput.textContent.trim());
+        });
+        els.clearBtn.addEventListener("click", clearAll);
+
+        refreshPreview();
+      })();
+    </script>
+  </body>
+</html>
