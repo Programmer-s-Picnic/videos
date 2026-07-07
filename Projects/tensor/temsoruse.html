@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TensorFlow.js Pass Fail Classifier</title>
+
+  <!-- TensorFlow.js Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #fff8ed;
+      color: #222;
+    }
+
+    h1 {
+      color: #c45a00;
+    }
+
+    pre {
+      background: #1e1e1e;
+      color: #ffffff;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 16px;
+      overflow-x: auto;
+      line-height: 1.6;
+    }
+
+    .box {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>TensorFlow.js Pass / Fail Classifier</h1>
+
+  <div class="box">
+    <h2>Program Output</h2>
+    <pre id="output"></pre>
+  </div>
+
+  <script>
+    // -------------------------------------------------
+    // TensorFlow.js version without Chart.js
+    // -------------------------------------------------
+
+    const outputBox = document.getElementById("output");
+
+    // Simple print function for browser output
+    function print(...text) {
+      outputBox.textContent += text.join(" ") + "\n";
+      console.log(...text);
+    }
+
+    async function runProgram() {
+
+      // -------------------------------------------------
+      // Input Marks
+      // -------------------------------------------------
+
+      let marksArray = [10, 20, 30, 35, 39, 40, 40, 50, 60, 80, 90];
+
+      print("Original Input Marks:");
+      print(JSON.stringify(marksArray));
+
+      // -------------------------------------------------
+      // Normalize the input
+      // 10 becomes 0.10
+      // 40 becomes 0.40
+      // 90 becomes 0.90
+      // -------------------------------------------------
+
+      let xArray = marksArray.map(value => value / 100);
+
+      print("\nNormalized Input:");
+      print(JSON.stringify(xArray));
+
+      // -------------------------------------------------
+      // Output values
+      // 0 = Fail
+      // 1 = Pass
+      // -------------------------------------------------
+
+      let yArray = [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1];
+
+      print("\nInput:");
+      print(JSON.stringify(xArray));
+
+      print("\nOutput:");
+      print(JSON.stringify(yArray));
+
+      // -------------------------------------------------
+      // Convert JavaScript arrays to TensorFlow tensors
+      // Input must be 2D:
+      // [[0.10], [0.20], [0.30], ...]
+      // -------------------------------------------------
+
+      const x = tf.tensor2d(xArray, [xArray.length, 1]);
+      const y = tf.tensor2d(yArray, [yArray.length, 1]);
+
+      // -------------------------------------------------
+      // Create model
+      //
+      // Python:
+      // inputs = tf.keras.Input(shape=[1])
+      // outputs = Dense(1, activation="sigmoid")(inputs)
+      //
+      // JavaScript:
+      // We use tf.sequential()
+      // -------------------------------------------------
+
+      const model = tf.sequential();
+
+      model.add(tf.layers.dense({
+        inputShape: [1],        // one input: marks
+        units: 1,               // one output: pass/fail probability
+        activation: "sigmoid"   // output between 0 and 1
+      }));
+
+      // -------------------------------------------------
+      // Compile model
+      //
+      // Adam optimizer adjusts weights
+      // binaryCrossentropy is used for 0/1 classification
+      // -------------------------------------------------
+
+      model.compile({
+        optimizer: tf.train.adam(0.1),
+        loss: "binaryCrossentropy",
+        metrics: ["accuracy"]
+      });
+
+      print("\nTraining model...");
+
+      // -------------------------------------------------
+      // Train the model
+      //
+      // epochs = number of times the model learns
+      // from the same training data
+      // -------------------------------------------------
+
+      await model.fit(x, y, {
+        epochs: 1000,
+        verbose: 0
+      });
+
+      print("Training completed.");
+
+      // -------------------------------------------------
+      // Print model summary in browser console
+      // -------------------------------------------------
+
+      print("\nModel created successfully.");
+      model.summary();
+
+      // -------------------------------------------------
+      // Test marks
+      // -------------------------------------------------
+
+      let testMarks = [17, 35, 40, 75];
+      let results = [];
+
+      print("\nPredictions:");
+
+      for (let i = 0; i < testMarks.length; i++) {
+
+        let marks = testMarks[i];
+
+        // Normalize test value
+        let testValue = marks / 100;
+
+        // Convert test value to tensor2d
+        let testTensor = tf.tensor2d([testValue], [1, 1]);
+
+        // Predict
+        let prediction = model.predict(testTensor);
+
+        // Get prediction value
+        let value = prediction.dataSync()[0];
+
+        print("\nPrediction value:", value);
+
+        let result;
+
+        if (value >= 0.5) {
+          result = "Pass";
+          results.push(1);
+        } else {
+          result = "Fail";
+          results.push(0);
+        }
+
+        print(
+          "Marks:",
+          marks,
+          "Prediction value:",
+          value.toFixed(4),
+          "Result:",
+          result
+        );
+      }
+
+      print("\nFinal predicted numeric results:");
+      print(JSON.stringify(results));
+    }
+
+    // Run the program
+    runProgram();
+  </script>
+
+</body>
+</html>
