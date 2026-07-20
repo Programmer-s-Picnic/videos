@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Beginning TensorFlow.js | Pass Fail Prediction</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+        content="Beginning TensorFlow.js lesson: train a simple neural network to predict pass or fail from student marks using sigmoid activation.">
+
+    <!-- TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+
+
+</head>
+
+<body>
+
+
+
+    <button onclick="trainModel()">Train Model</button>
+    <button onclick="testModel()">Test Model</button>
+
+
+
+
+
+    <script>
+        /*
+            Beginning TensorFlow.js
+            Pass / Fail Prediction
+    
+            Rule:
+            Marks < 40  -> Fail -> 0
+            Marks >= 40 -> Pass -> 1
+        */
+
+        // ----------------------------------------------------
+        // 1. Training Data
+        // ----------------------------------------------------
+
+        const marks = [10, 20, 30, 35, 39, 40, 40, 50, 60, 80, 90];
+
+        const xValues = marks.map(function (mark) {
+            return mark / 100;
+        });
+
+        const yValues = [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1];
+
+        // ----------------------------------------------------
+        // 2. Create Model
+        // ----------------------------------------------------
+
+        const model = tf.sequential();
+
+        model.add(
+            tf.layers.dense({
+                units: 1,
+                inputShape: [1],
+                activation: "sigmoid"
+            })
+        );
+
+        // ----------------------------------------------------
+        // 3. Compile Model
+        // ----------------------------------------------------
+
+        model.compile({
+            optimizer: tf.train.adam(0.1),
+            loss: "binaryCrossentropy",
+            metrics: ["accuracy"]
+        });
+
+        // ----------------------------------------------------
+        // 4. Train Model
+        // ----------------------------------------------------
+
+        async function trainModel() {
+
+            const xs = tf.tensor2d(xValues, [xValues.length, 1]);
+            const ys = tf.tensor2d(yValues, [yValues.length, 1]);
+
+            await model.fit(xs, ys, {
+                epochs: 1000,
+                verbose: 0,
+                shuffle: true,
+                callbacks: {
+                    onEpochEnd: function (epoch, logs) {
+                        if ((epoch + 1) % 100 === 0) {
+                            console.log(
+                                "Epoch " + (epoch + 1) +
+                                " / 1000\nLoss: " + logs.loss.toFixed(4));
+                        }
+                    }
+                }
+            });
+
+
+
+            xs.dispose();
+            ys.dispose();
+
+            console.log("Training done");
+
+        }
+
+        // ----------------------------------------------------
+        // 5. Test Model
+        // ----------------------------------------------------
+
+        function testModel() {
+            const testMarks = [17, 35, 40, 75];
+
+
+            for (let i = 0; i < testMarks.length; i++) {
+                const mark = testMarks[i];
+
+                const testValue = mark / 100;
+
+                const inputTensor = tf.tensor2d([testValue], [1, 1]);
+
+                const predictionTensor = model.predict(inputTensor);
+
+                const predictionValue = predictionTensor.dataSync()[0];
+
+                let result;
+                let numericResult;
+
+
+                if (predictionValue >= 0.5) {
+                    result = "Pass";
+                    numericResult = 1;
+
+                } else {
+                    result = "Fail";
+                    numericResult = 0;
+
+                }
+
+
+
+                console.log(
+                    "Marks:",
+                    mark,
+                    "Prediction value:",
+                    predictionValue.toFixed(4),
+                    "Result:",
+                    result
+                );
+
+                inputTensor.dispose();
+                predictionTensor.dispose();
+
+            }
+            console.log("Testing done");
+        }
+    </script>
+
+</body>
+
+</html>
